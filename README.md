@@ -11,6 +11,6 @@ lundi
 
 # OR JUST RUN (no sudo needed)
 ```console
-foo@bar:<...>$ FILE=/tmp/$(date +%s) && wget -qO $FILE.sh https://raw.githubusercontent.com/Motyak/cestleclate/master/cplusplus/s.sh && wget -qO $FILE.cpp https://raw.githubusercontent.com/Motyak/cestleclate/master/c.cpp && sh $FILE.sh $FILE.cpp && rm $FILE.sh $FILE.cpp
+foo@bar:<...>$ FILE=/tmp/$(date +%s) && wget -qO $FILE.run.sh https://raw.githubusercontent.com/Motyak/cestleclate/master/run.sh && sh $FILE.run.sh && rm $FILE.run.sh
 lundi
 ```
