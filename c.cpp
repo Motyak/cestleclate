@@ -14,18 +14,18 @@ std::string str[]
     "samedi", "dimanche" 
 };
 
-Jour operator+(const Jour j, const int i)
+Jour operator+(const Jour& j, const int i)
 {
     return (Jour)(((int)j + i) % 7);
 }
 
-std::ostream& operator<<(std::ostream& os, const Jour j)
+std::ostream& operator<<(std::ostream& os, const Jour& j)
 {
     os << str[j];
     return os;
 }
 
-void print(const Jour j) { std::cout<<j<<std::endl; }
+void print(const Jour& j) { std::cout<<j<<std::endl; }
 
 int main()
 {
