@@ -25,7 +25,7 @@ std::ostream& operator<<(std::ostream& os, const Jour& j)
     return os;
 }
 
-void print(const Jour& j) { std::cout<<j<<std::endl; }
+void print(const Jour& j) { std::cout << j << std::endl; }
 
 int main()
 {
