@@ -5,7 +5,9 @@ if [ $(ls -l *.cpp 2>/dev/null | wc -l) = "1" ]
 then
 	SRC="$(ls *.cpp)"
 fi
-g++ -o /tmp/$OUT $SRC
+#-x allows us to pass a str instead of file..
+#..by process substitution
+g++ -x c++ -o /tmp/$OUT $SRC
 if [ -f /tmp/$OUT ]
 then
 	/tmp/$OUT

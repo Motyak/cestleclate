@@ -1,0 +1,24 @@
+Nom de fichier en arg
+SINON
+Le seul fichier du répertoire
+SINON
+Le fichier main.cpp
+SINON
+<affichage syntaxe>
+
+Sur le fichier choisi : 
+-> Parser la ligne commentée au dessus de la
+fonction main
+-> Enregistrer tous les fichiers sources
+dans un répertoire dans /tmp, nommé à partir 
+du 'date now'
+-> Executer le make (redirection vers dev null)
+-> Execution du binaire
+-> Suppression du répertoire
+
+
+
+BUT : 
+curl -sS \
+https://github.com/Motyak/cestleclate/blob/master/c.cpp \
+| cplusplus -

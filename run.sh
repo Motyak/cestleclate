@@ -1,6 +1,7 @@
 #!/bin/sh
-FILE=/tmp/$(date +%s) && 
-wget -qO $FILE.c.cpp https://raw.githubusercontent.com/Motyak/cestleclate/master/c.cpp && 
-g++ -o $FILE $FILE.c.cpp &&
-$FILE
-rm $FILE $FILE.c.cpp 2>/dev/null
+TMP=/tmp/$(date +%s) && 
+mkdir -p $TMP &&
+curl -sSo $TMP/c.cpp https://raw.githubusercontent.com/Motyak/cestleclate/master/c.cpp && 
+g++ -o $TMP/a.out $TMP/c.cpp &&
+$TMP/a.out
+rm -rf $TMP
