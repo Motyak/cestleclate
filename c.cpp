@@ -8,10 +8,10 @@ enum Jour
 
 Jour jour;
 
-std::string str[] 
-{ 
+std::string str[]
+{
     "lundi", "mardi", "mercredi", "jeudi", "vendredi",
-    "samedi", "dimanche" 
+    "samedi", "dimanche"
 };
 
 Jour operator+(const Jour& j, const int i)
@@ -25,10 +25,10 @@ std::ostream& operator<<(std::ostream& os, const Jour& j)
     return os;
 }
 
-void print(const Jour& j) { std::cout << j << std::endl; }
+void afficher(const Jour& j) { std::cout << j << std::endl; }
 
 int main()
 {
     jour = mardi + 6;
-    print(jour);
+    afficher(jour);
 }

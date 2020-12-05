@@ -14,3 +14,8 @@ lundi
 $ sh <(curl -sS https://raw.githubusercontent.com/Motyak/cestleclate/master/run.sh)
 lundi
 ```
+
+# [INSTALL SHOWMAIN (needs sudo)]
+```console
+$ sh <(curl -sS https://raw.githubusercontent.com/Motyak/cestleclate/master/showmain/install.sh)
+```
