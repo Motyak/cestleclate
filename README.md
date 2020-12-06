@@ -19,3 +19,14 @@ lundi
 ```console
 $ sh <(curl -sS https://raw.githubusercontent.com/Motyak/cestleclate/master/showmain/install.sh)
 ```
+
+# SHOW MAIN AND EXEC (no sudo needed)
+```console
+$ f=$(curl -sS https://raw.githubusercontent.com/Motyak/cestleclate/master/c.cpp); echo "$f" | showmain - && echo "$f" | cplusplus -
+int main()
+{
+    jour = mardi + 6;
+    afficher(jour);
+}
+lundi
+```
