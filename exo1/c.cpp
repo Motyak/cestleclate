@@ -21,8 +21,7 @@ Jour operator+(const Jour& j, const int i)
 
 std::ostream& operator<<(std::ostream& os, const Jour& j)
 {
-    os << str[j];
-    return os;
+    return os << str[j];
 }
 
 void afficher(const Jour& j) { std::cout << j << std::endl; }
