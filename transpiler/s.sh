@@ -5,10 +5,9 @@ then
 	SRC="$(ls *.cpp)"
 fi
 
-# pattern regex représentant un prix
-
-# pattern regex représentant un pourcentage
-
-# afficher le contenu du fichier src, remplacer les matchs
-
-cat $1
+# substiture prices with currency in front
+perl -pe 's/\$([0-9]+(?:\.[0-9]{1,2})?)/Prix{'\''\$'\'', $1}/g' $SRC |
+# substiture prices with currency in back
+perl -pe 's/([0-9]+(?:\.[0-9]{1,2})?)€/Prix{'\''\€'\'', $1}/g' |
+# substiture percentages
+perl -pe 's/([0-9]+(?:\.[0-9]{1,2})?)%/Pourcentage{$1}/g'
