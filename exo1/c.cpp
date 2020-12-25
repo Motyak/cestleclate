@@ -4,9 +4,7 @@ enum Jour
 {
     lundi, mardi, mercredi, jeudi, vendredi,
     samedi, dimanche
-};
-
-Jour jour;
+} jour;
 
 std::string str[]
 {
