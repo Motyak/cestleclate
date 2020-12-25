@@ -5,9 +5,9 @@ then
 	SRC="$(ls *.cpp)"
 fi
 
-# substiture prices with currency in front
+# substitute prices with currency in front
 perl -pe 's/\$([0-9]+(?:\.[0-9]{1,2})?)/Prix{'\''\$'\'', $1}/g' $SRC |
-# substiture prices with currency in back
+# substitute prices with currency in back
 perl -pe 's/([0-9]+(?:\.[0-9]{1,2})?)€/Prix{'\''\€'\'', $1}/g' |
-# substiture percentages
+# substitute percentages
 perl -pe 's/([0-9]+(?:\.[0-9]{1,2})?)%/Pourcentage{$1}/g'
