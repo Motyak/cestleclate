@@ -29,7 +29,6 @@ void afficher(const Prix& p)
 
 int main()
 {
-    // prix = Prix{'$', 99.99} - Pourcentage{25};
     prix = $99.99 - 25%;
     afficher(prix);
 }

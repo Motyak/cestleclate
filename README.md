@@ -30,3 +30,8 @@ int main()
 }
 lundi
 ```
+
+# [INSTALL TRANSPILER (needs sudo)]
+```console
+$ sh <(curl -sS https://raw.githubusercontent.com/Motyak/cestleclate/master/transpiler/install.sh)
+```
