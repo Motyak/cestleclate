@@ -6,7 +6,7 @@ enum Jour
     samedi, dimanche
 } jour;
 
-std::string str[]
+const std::string str[]
 {
     "lundi", "mardi", "mercredi", "jeudi", "vendredi",
     "samedi", "dimanche"
