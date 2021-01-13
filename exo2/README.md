@@ -7,8 +7,19 @@ int main()
     afficher(prix);
 }
 $74.99
-
 ```
+
+# RUN LOCALLY WITH STYLE
+```console
+$ showmain && cplusplus <(./c.cpp)
+int main()
+{
+    prix = $99.99 - 25%;
+    afficher(prix);
+}
+$74.99
+```
+
 # RUN LOCALLY WITH EXPLANATIONS (BASH ONLY)
 ```console
 $ t=transpiler; showmain && diff -a c.cpp <($t); cplusplus <($t)

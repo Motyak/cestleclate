@@ -1,3 +1,4 @@
+#!/bin/transpiler
 #include <iostream>
 #include <cwchar>
 #include <iomanip>
