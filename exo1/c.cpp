@@ -1,3 +1,4 @@
+#!/bin/cplusplus
 #include <iostream>
 
 enum Jour
