@@ -11,7 +11,7 @@ $74.99
 ```
 # RUN LOCALLY WITH EXPLANATIONS (BASH ONLY)
 ```console
-$ f=c.cpp; t=transpiler; showmain $f && diff -a $f <($t $f); cplusplus <($t $f)
+$ t=transpiler; showmain && diff -a c.cpp <($t); cplusplus <($t)
 int main()
 {
     prix = $99.99 - 25%;
