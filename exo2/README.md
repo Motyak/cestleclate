@@ -11,7 +11,7 @@ $74.99
 
 # RUN LOCALLY WITH STYLE
 ```console
-$ showmain && cplusplus <(./c.cpp)
+$ f=c.cpp; showmain $f && cplusplus <(./$f)
 int main()
 {
     prix = $99.99 - 25%;

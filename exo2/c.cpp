@@ -22,14 +22,14 @@ std::wostream& operator<<(std::wostream& os, const Prix& p)
                             os << p.valeur << p.devise;
 }
 
-void afficher(const Prix& p) 
-{ 
-    std::wcout << std::setprecision(2) << std::fixed << p 
-               << std::endl; 
+void afficher(const Prix& p)
+{
+    std::wcout << std::setprecision(2) << std::fixed << p
+               << std::endl;
 }
 
 int main()
 {
-    prix = $99.99 - 25%;
+    prix = 91€ - 13.37%;
     afficher(prix);
 }
