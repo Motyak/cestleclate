@@ -30,6 +30,6 @@ void afficher(const Prix& p)
 
 int main()
 {
-    prix = 91€ - 13.37%;
+    prix = $99.99 - 25%;
     afficher(prix);
 }

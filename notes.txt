@@ -1,0 +1,4 @@
+Faire en sorte que dans le transpiler, le regex pour le pourcentage
+il ne match que si le '%' est collé à un nombre (valide) et qu'il n'y ai
+pas un autre nombre (valide) à droite de celui-ci, car sinon
+on pourrait confondre le signe avec le symbole modulo.

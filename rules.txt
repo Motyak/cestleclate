@@ -1,0 +1,11 @@
+-A program only does one thing and what it is must be clear
+-Only use/create files when you have no choice (except for programs)
+-A source code should :
+	--make sense as reading it
+	--be maximum 40 lines long
+	--be maximum 70 characters wide
+	--have an empty last line
+-Program the least possible (don't overthink stuff)
+-Hide the complexity of a source code outside the main function
+-Hide the complexity of a program behind a meaningful name
+
