@@ -7,7 +7,7 @@ then
 fi
 #-x allows us to pass a str instead of file..
 #..by process substitution
-g++ -x c++ -o /tmp/$OUT $SRC
+g++ -x c++ -o /tmp/$OUT $SRC $@
 if [ -f /tmp/$OUT ]
 then
 	/tmp/$OUT
