@@ -24,4 +24,7 @@ perl -pe 's/([0-9]+(?:\.[0-9]+)?)s/std::chrono::seconds($1)/g' |
 # subsitute minutes
 perl -pe 's/([0-9]+(?:\.[0-9]+)?)m/std::chrono::minutes($1)/g' |
 # subsitute hours
-perl -pe 's/([0-9]+(?:\.[0-9]+)?)h/std::chrono::hours($1)/g'
+perl -pe 's/([0-9]+(?:\.[0-9]+)?)h/std::chrono::hours($1)/g' |
+
+# make void functions return true
+perl -pe 's/void ([a-zA-Z][a-zA-Z0-9_]*\(.*\).*{.*;)\s*}/bool $1 return true;}/g'

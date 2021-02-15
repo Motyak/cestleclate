@@ -11,26 +11,18 @@ class Horloge
     Temps t;
 
     void actualiser() { std::time(&this->t); }
-    void actualiserPeriodiquement()
-    {
-        while(true)
-        {
-            this->actualiser();
-            attendre(1s);
-        }
+    void actualiserPeriodiquement() {
+        while(attendre(1s)) this->actualiser();
     }
 
   public: 
-    Horloge()
-    {
+    Horloge() : t(std::time(nullptr)) {
         std::thread(&Horloge::actualiserPeriodiquement, this)
                    .detach();
     }
     friend std::ostream& operator<<(std::ostream& os, const Horloge& h)
     {
-        char* heure = std::ctime(&h.t);
-        heure[strlen(heure) - 1] = '\0';
-        return os << heure;
+        os << std::strtok(std::ctime(&h.t), "\n");
     }
 } heure;
 
