@@ -11,8 +11,7 @@ struct Prix
 
 using Pourcentage = double;
 
-Prix operator-(const Prix& pr, const Pourcentage& po)
-{
+Prix operator-(const Prix& pr, const Pourcentage& po) {
     return {pr.devise, pr.valeur - pr.valeur * (po / 100)};
 }
 
@@ -22,8 +21,7 @@ std::wostream& operator<<(std::wostream& os, const Prix& p)
                             os << p.valeur << p.devise;
 }
 
-void afficher(const Prix& p)
-{
+void afficher(const Prix& p) {
     std::wcout << std::setprecision(2) << std::fixed << p
                << std::endl;
 }

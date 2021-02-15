@@ -1,11 +1,17 @@
--A program only does one thing and what it is must be clear
--Only use/create files when you have no choice (except for programs)
--A source code should :
-	--make sense as reading it
-	--be maximum 40 lines long
-	--be maximum 70 characters wide
-	--have an empty last line
--Program the least possible (don't overthink stuff)
--Hide the complexity of a source code outside the main function
--Hide the complexity of a program behind a meaningful name
+A program..
+-only does one thing and what it is must be clear
+-hide its complexity behind a meaningful name
+-only use/create files when we have no choice (except for programs themselves)
+-can be used in lot of ways, used along with others'
 
+
+A code..
+-hide its complexity outside of the main function
+-makes sense as reading it
+-'s purpose is easy to understand by looking at its main function
+-doesn't need to be complicated or optimized
+
+Format rules:
+-Well indented > 36 lines long > 60 characters wide
+	(Sometime it's impossible => priorities)
+-Try making oneline functions (but only if it makes sense)

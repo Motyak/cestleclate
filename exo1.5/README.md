@@ -13,7 +13,7 @@ Mon Feb 15 01:50:06 2021
 
 # RUN LOCALLY WITH STYLE
 ```console
-$ f=c.cpp; showmain $f && cplusplus -pthread <(./$f)
+$ f=c.cpp; showmain $f && cplusplus <(./$f) -pthread
 int main()
 {
     afficher(heure);
