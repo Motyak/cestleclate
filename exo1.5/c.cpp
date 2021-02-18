@@ -15,14 +15,15 @@ class Horloge
         while(attendre(1s)) this->actualiser();
     }
 
-  public: 
-    Horloge() : t(std::time(nullptr)) {
+  public:
+    Horloge() : t(std::time(nullptr))
+    {
         std::thread(&Horloge::actualiserPeriodiquement, this)
                    .detach();
     }
     friend std::ostream& operator<<(std::ostream& os, const Horloge& h)
     {
-        os << std::strtok(std::ctime(&h.t), "\n");
+        return os << std::strtok(std::ctime(&h.t), "\n");
     }
 } heure;
 
