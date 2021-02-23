@@ -1,7 +1,4 @@
-#include <iostream>
-#include <cwchar>
-#include <map>
-#include <variant>
+#include "includes.h" // iostream, cwchar, map, variant
 
 template<class... Ts> struct Evolution : Ts... { using Ts::operator()...; };
 template<class... Ts> Evolution(Ts...) -> Evolution<Ts...>;
@@ -25,10 +22,8 @@ struct Choix
     };
     using Items = std::map<Choix::Item,Quantite>;
 
-    // inline static const Calories cal[4]{220Cal., 440Cal., 320Cal., 490Cal.};
-    inline static const Calories cal[4]{Calories{220}, Calories{440}, Calories{320}, Calories{490}};
-    // inline static const Prix prix[4]{1.90€, 3.50€, 2.50€, 2.90€};
-    inline static const Prix prix[4]{Prix{L'€', 1.90}, Prix{L'€', 3.50}, Prix{L'€', 2.50}, Prix{L'€', 2.90}};
+    inline static const Calories cal[4]{220Cal., 440Cal., 320Cal., 490Cal.};
+    inline static const Prix prix[4]{1.90€, 3.50€, 2.50€, 2.90€};
 };
 Choix::Items menu;
 
@@ -37,7 +32,6 @@ struct Repas
 {
     Forme forme;
 
-    Repas() = default;
     Repas(Forme forme) : forme(forme) { this->evoluer(); }
     void evoluer()
     {
@@ -48,8 +42,8 @@ struct Repas
                 // *this = ...
                 // this->evoluer();
             },
-            [](const Choix& choix) {
-                // création de la commande (requete http-like)
+            [](const Choix::Items& items) {
+                // création de la commande (prix des items + prix total)
                 // *this = ...
                 // this->evoluer();
             },
@@ -63,20 +57,16 @@ std::ostream& operator<<(std::ostream& os, const Repas& repas)
     return os << std::get<Commande>(repas.forme);
 }
 
-void commander(const Repas& repas)
-{
+void commander(const Repas& repas) {
     std::cout << "Commande : " << std::endl << repas
               << std::endl << std::endl;
 }
 
 int main()
 {
-    // commander(Repas{10€});
-    commander(Repas{Budget{L'€', 10.0}});
+    commander(Repas{10€});
 
-    // menu[Choix::Item::CHEESEBURGER] = 1x;
-    // menu[Choix::Item::FRITES_MOYENNE] = 1x;
-    menu[Choix::Item::CHEESEBURGER] = Quantite{1};
-    menu[Choix::Item::FRITES_MOYENNE] = Quantite{1};
+    menu[Choix::Item::CHEESEBURGER] = 1x;
+    menu[Choix::Item::FRITES_MOYENNE] = 1x;
     commander(Repas{menu});
 }

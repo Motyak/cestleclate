@@ -26,5 +26,11 @@ perl -pe 's/([0-9]+(?:\.[0-9]+)?)m/std::chrono::minutes($1)/g' |
 # subsitute hours
 perl -pe 's/([0-9]+(?:\.[0-9]+)?)h/std::chrono::hours($1)/g' |
 
+# substitute calories
+perl -pe 's/([0-9]+)Cal\./Calories{$1}/g' |
+
+# substitute quantites
+perl -pe 's/([0-9]+)x/Quantite{$1}/g' |
+
 # make void functions return true
 perl -pe 's/void ([a-zA-Z][a-zA-Z0-9_]*\(.*\).*{.*;)\s*}/bool $1 return true;}/g'
