@@ -5,12 +5,16 @@ std::ofstream out("stdout", std::ofstream::binary | std::ofstream::trunc);
 
 std::ostream& operator<<(std::ostream& os, const Repas& repas)
 {
-    cereal::BinaryOutputArchive oarchive(os);
+    std::ostringstream oss;
+
+    // cereal::BinaryOutputArchive oarchive(os);
+    cereal::BinaryOutputArchive oarchive(oss);
     oarchive(repas);
-    return os;
+    return os << oss.str();
 }
 
 void commander(const Repas& repas) { out << repas; }
+// void commander(const Repas& repas) { std::cout << repas; }
 
 int main()
 {

@@ -11,6 +11,7 @@ std::istream& operator>>(std::istream& is, Repas& repas)
 }
 
 void preparer(Repas& repas) { in >> repas; }
+// void preparer(Repas& repas) { std::cin >> repas; }
 
 void afficher(const Repas& repas) 
 {
