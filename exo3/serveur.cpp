@@ -1,17 +1,18 @@
 #include "Repas.h"
 
 Repas repas;
-std::ifstream in("stdout", std::ifstream::binary);
 
 std::istream& operator>>(std::istream& is, Repas& repas)
 {
-    cereal::BinaryInputArchive iarchive(is);
+    std::string str(std::istreambuf_iterator<char>(is), {});
+    std::istringstream iss(base64_decode(str));
+    cereal::BinaryInputArchive iarchive(iss);
     iarchive(repas);
     return is;
 }
 
-void preparer(Repas& repas) { in >> repas; }
-// void preparer(Repas& repas) { std::cin >> repas; }
+// void preparer(Repas& repas) { in >> repas; }
+void preparer(Repas& repas) { std::cin >> repas; }
 
 void afficher(const Repas& repas) 
 {
@@ -31,6 +32,6 @@ int main()
     preparer(repas);
     afficher(repas);
 
-    preparer(repas);
-    afficher(repas);
+    // preparer(repas);
+    // afficher(repas);
 }

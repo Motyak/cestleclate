@@ -1,20 +1,17 @@
 #include "Repas.h"
 
 Choix::Items menu;
-std::ofstream out("stdout", std::ofstream::binary | std::ofstream::trunc);
 
 std::ostream& operator<<(std::ostream& os, const Repas& repas)
 {
     std::ostringstream oss;
-
-    // cereal::BinaryOutputArchive oarchive(os);
     cereal::BinaryOutputArchive oarchive(oss);
     oarchive(repas);
-    return os << oss.str();
+    std::string str = oss.str();
+    return os << base64_encode((const unsigned char *)str.c_str(), str.length());
 }
 
-void commander(const Repas& repas) { out << repas; }
-// void commander(const Repas& repas) { std::cout << repas; }
+void commander(const Repas& repas) { std::cout << repas; }
 
 int main()
 {
