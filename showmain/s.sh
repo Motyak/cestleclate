@@ -1,8 +1,13 @@
 #!/bin/sh
-SRC=$1
-if [ -z $SRC ] && [ $(ls -l *.cpp 2>/dev/null | wc -l) = "1" ]
+if [ $# -ne 1 ] && [ $(ls -l *.cpp 2>/dev/null | wc -l) = "1" ]
 then
-	SRC="$(ls *.cpp)"
+	grep -zoP 'int main\(.*\)(?:.|\n)*{((?:.|\n)*)}' "$(ls *.cpp)"
+	echo ""
+else
+	for src in $@
+	do
+		echo "\e[35m$src\e[0m:"
+		grep -zoP 'int main\(.*\)(?:.|\n)*{((?:.|\n)*)}' $src
+		echo ""
+	done
 fi
-grep -zoP 'int main\(.*\)(?:.|\n)*{((?:.|\n)*)}' $SRC
-echo ''
