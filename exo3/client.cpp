@@ -4,23 +4,18 @@ Choix::Items menu;
 
 std::ostream& operator<<(std::ostream& os, const Repas& repas)
 {
-    std::ostringstream oss;
-    cereal::BinaryOutputArchive oarchive(oss);
+    cereal::BinaryOutputArchive oarchive(os);
     oarchive(repas);
-    std::string str = oss.str();
-    return os << base64_encode((const unsigned char *)str.c_str(), str.length()) << std::endl;
+    return os;
 }
 
 void commander(const Repas& repas) { std::cout << repas; }
 
 int main()
 {
-    // commander(Repas{$10.00});
-    commander(Repas{Prix{L"€", 10.00}});
+    commander(Repas{10.00€});
 
-    // menu[Choix::Item::CHEESEBURGER] = 1x;
-    // menu[Choix::Item::FRITES_MOYENNE] = 1x;
-    menu[Choix::Item::CHEESEBURGER] = Quantite{1};
-    menu[Choix::Item::FRITES_MOYENNE] = Quantite{1};
+    menu[Choix::Item::CHEESEBURGER] = 1x;
+    menu[Choix::Item::FRITES_MOYENNE] = 1x;
     commander(Repas{menu});
 }

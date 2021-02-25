@@ -4,10 +4,7 @@ Repas repas;
 
 std::istream& operator>>(std::istream& is, Repas& repas)
 {
-    std::string str;
-    is >> str;
-    std::istringstream iss(base64_decode(str));
-    cereal::BinaryInputArchive iarchive(iss);
+    cereal::BinaryInputArchive iarchive(is);
     iarchive(repas);
     return is;
 }
@@ -23,7 +20,7 @@ void afficher(const Repas& repas)
                 std::wcout << key << " : " << value << std::endl;
         },
         [](auto autre){}
-    }, repas.forme);
+    }, repas);
 }
 
 int main()

@@ -34,4 +34,3 @@ perl -pe 's/([0-9]+)x/Quantite{$1}/g' |
 
 # make void functions return true
 perl -pe 's/void ([a-zA-Z][a-zA-Z0-9_]*?\((?:.|\s)*?\)(?:.|\s)*?{(?:.|\s)*?;)\s*?}\n/bool $1 return true;}\n/g'
-
