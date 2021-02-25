@@ -8,7 +8,7 @@ std::ostream& operator<<(std::ostream& os, const Repas& repas)
     cereal::BinaryOutputArchive oarchive(oss);
     oarchive(repas);
     std::string str = oss.str();
-    return os << base64_encode((const unsigned char *)str.c_str(), str.length());
+    return os << base64_encode((const unsigned char *)str.c_str(), str.length()) << std::endl;
 }
 
 void commander(const Repas& repas) { std::cout << repas; }

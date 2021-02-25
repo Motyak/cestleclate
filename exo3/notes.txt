@@ -1,0 +1,6 @@
+Bon mes deux programmes fonctionnent mais à priori
+impossible de faire :
+cplusplus <(./transpile_client.sh) | cplusplus <(./transpile_serveur.sh)
+
+du coup je compile puis je fais ./client | ./serveur
+
