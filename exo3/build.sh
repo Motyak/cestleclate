@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 for prog in client serveur
 do
-    echo "$(cat Repas.h)\n$(tail -n+2 $prog.cpp)" |
+    ( echo "$(< Repas.h)" && echo "$(tail -n+2 $prog.cpp)" ) |
     transpiler |
     g++ -x c++ -std=c++17 -o $prog -
 done
