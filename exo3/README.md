@@ -17,6 +17,6 @@ $ ./client | ./serveur
 <client machine>$ ./client | nc localhost 55555 -q1
 ```
 ```console
-<server machine>$
 <...>
+<server machine>$
 ```

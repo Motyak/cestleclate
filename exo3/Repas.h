@@ -25,9 +25,9 @@ struct Choix
     };
     using Items = std::map<Choix::Item,Quantite>;
 
-    inline static const std::wstring str[4]{
-        L"Cheeseburger", L"Double cheese",
-        L"Frites moyenne", L"Frites grande"
+    inline static const char* str[4]{
+        "Cheeseburger", "Double cheese",
+        "Frites moyenne", "Frites grande"
     };
     inline static const Calories cal[4]{220Cal., 440Cal., 320Cal., 490Cal.};
     inline static const Prix prix[4]{1.90€, 3.50€, 2.50€, 2.90€};
