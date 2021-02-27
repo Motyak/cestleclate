@@ -15,19 +15,22 @@ void afficher(Repas& repas)
 {
     std::visit(overload{
         [&](const Budget& budget) {
-            std::wcout<<budget.valeur<<budget.devise<<std::endl;
+            std::wcout << std::setprecision(2) << std::fixed << budget.valeur 
+                       << budget.devise << std::endl;
         },
         [&](const Choix::Items& items) {
             struct{Prix prix={L'€',0.0}; Calories cal=0;} total;
-            std::wstring commande;
+            std::wostringstream commande;
+            commande.precision(2);
+            commande.setf(std::ios::fixed);
             for (const auto& [item, quantite] : items)
             {
                 total.prix.valeur += Choix::prix[item].valeur * quantite;
                 total.cal += Choix::cal[item] * quantite;
-                commande += Choix::str[item] + L": " + std::to_wstring(quantite) + L"x\n";
+                commande << Choix::str[item] << L": " << quantite << L"x\n";
             }
-            commande += L"Total: " + std::to_wstring(total.prix.valeur) + L"€ " + std::to_wstring(total.cal) + L"Cal." ;
-            afficher(repas = commande);
+            commande << L"Total: " << total.prix.valeur << L"€ " << total.cal << L"Cal." ;
+            afficher(repas = commande.str());
         },
         [](auto commande){ std::wcout << commande << std::endl; }
     }, repas);
