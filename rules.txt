@@ -15,3 +15,14 @@ Format rules:
 -Well indented > 36 lines long > 60 characters wide
 	(Sometime it's impossible => priorities)
 -Try making oneline functions (but only if it makes sense)
+
+Code directory hierarchy :
+<directory>
+	'--<directories>	<---- libraries, 1 directory for each	//try not using any ofc
+	'--c.cpp			<---- source code
+	'--README.md		<---- readme file
+[	'--<..>.h			<---- header file	] //try not using one if not necessary
+
+Do a lot with only a few
+'-> You can either "interpret" the code using 'cplusplus c.cpp' or
+		you can compile it to a binary file using 'cplusplus c.cpp -o bin

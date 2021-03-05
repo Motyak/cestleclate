@@ -1,0 +1,25 @@
+Faire en sorte qu'on puisse avoir deux codes dans
+un même c.cpp avec les ifdef et l'option -D
+de g++.
+Faire en sorte que le build.sh fonctionne
+
+Faire en sorte que le transpiler
+ajoute le contenu des headers inclus dans c.cpp
+au code.
+
+Faire en sorte que le showmain refonctionne
+suite aux ifdef de l'exo3.
+Faire un affichage style :
+'''
+c.cpp::client:
+...
+
+c.cpp::serveur:
+...
+'''
+
+Faire en sorte que la transformation des fonctions
+void en bool fonctionne dans le transpiler
+
+Essayer de faire fonctionner les programmes sans avoir à les build
+(avec cplusplus en passant l'option -D qui est transmise à g++)
