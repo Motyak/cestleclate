@@ -26,7 +26,7 @@ Mon Feb 15 01:50:06 2021
 
 # RUN WITH CURL
 ```console
-$ f=$(curl -sS https://raw.githubusercontent.com/Motyak/cestleclate/master/exo2_bonus/c.cpp); echo "$f" | showmain - && echo "$f" | transpiler | cplusplus -pthread -
+$ f=$(curl -sS https://raw.githubusercontent.com/Motyak/cestleclate/master/exo2_bonus/c.cpp); echo "$f" | showmain - && echo "$f" | transpiler - | cplusplus -pthread -
 int main()
 {
     prix = $99.99 - 25%;

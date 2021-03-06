@@ -5,8 +5,7 @@
 
     std::ostream& operator<<(std::ostream& os, const Repas& repas)
     {
-        cereal::BinaryOutputArchive oarchive(os);
-        oarchive(repas);
+        (cereal::BinaryOutputArchive(os))(repas);
         return os;
     }
 
@@ -27,8 +26,7 @@
 
     std::istream& operator>>(std::istream& is, Repas& repas)
     {
-        cereal::BinaryInputArchive iarchive(is);
-        iarchive(repas);
+        (cereal::BinaryInputArchive(is))(repas);
         return is;
     }
 
