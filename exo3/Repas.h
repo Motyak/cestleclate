@@ -23,18 +23,28 @@ using Budget = Prix;
 
 struct Choix
 {
-    enum Item {
+    enum Item
+    {
         CHEESEBURGER,   DOUBLE_CHEESE,
         FRITES_MOYENNE, FRITES_GRANDE
     };
     using Items = std::map<Choix::Item,Quantite>;
 
-    inline static const char* str[4]{
+    inline static const char* str[4]
+    {
         "Cheeseburger", "Double cheese",
         "Frites moyenne", "Frites grande"
     };
-    inline static const Calories cal[4]{220Cal., 440Cal., 320Cal., 490Cal.};
-    inline static const Prix prix[4]{1.90€, 3.50€, 2.50€, 2.90€};
+    inline static const Calories cal[4]
+    {
+        220Cal., 440Cal., 
+        320Cal., 490Cal.
+    };
+    inline static const Prix prix[4]
+    {
+        1.90€, 3.50€, 
+        2.50€, 2.90€
+    };
 };
 
 using Repas = std::variant<Budget,Choix::Items,Commande>;

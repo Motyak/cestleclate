@@ -13,7 +13,7 @@
 
     int main()
     {
-        commander(Repas{10.00€});
+        commander(Repas{4.00€});
 
         menu[Choix::Item::CHEESEBURGER] = 1x;
         menu[Choix::Item::FRITES_MOYENNE] = 1x;
@@ -30,27 +30,46 @@
         return is;
     }
 
-    void preparer(Repas& repas) { std::cin >> repas; }
+    void prendreConnaissance(Repas& repas) { std::cin >> repas; }
 
     void presenter(Repas& repas)
     {
         std::visit(overload{
-            [&](const Budget& budget) {
-                std::wcout << std::setprecision(2) << std::fixed << budget.valeur 
-                        << budget.devise << std::endl;
+            [&](const Budget& budget)
+            {
+                Choix::Items items;
+
+                if(budget.valeur >= 6.40)
+                    items[Choix::Item::FRITES_GRANDE] = 1x;
+                if(budget.valeur >= 3.50)
+                    items[Choix::Item::DOUBLE_CHEESE] = 1x;
+                else if(budget.valeur >= 1.90)
+                    items[Choix::Item::CHEESEBURGER] = 1x;
+
+                presenter(repas = items);
             },
-            [&](const Choix::Items& items) {
+            [&](const Choix::Items& items)
+            {
                 const wchar_t devise = (*Choix::prix).devise;
                 struct{Prix prix={devise,0.0}; Calories cal=0;} total;
                 std::wostringstream commande;
                 commande.precision(2);
                 commande.setf(std::ios::fixed);
-                for (const auto& [item, quantite] : items) {
+
+                for (const auto& [item, quantite] : items)
+                {
                     total.prix.valeur += Choix::prix[item].valeur * quantite;
                     total.cal += Choix::cal[item] * quantite;
-                    commande << Choix::str[item] << ": " << quantite << "x\n";
+                    commande << Choix::str[item] << ": " << quantite 
+                             << "x" << std::endl;
                 }
-                commande << "Total: " << total.prix.valeur << devise << ' ' << total.cal << "Cal." ;
+                commande << "Total: ";
+                if(devise == '$')
+                    commande << devise << total.prix.valeur ;
+                else
+                    commande << total.prix.valeur << devise;
+                commande << ' ' << total.cal << "Cal." ;
+
                 presenter(repas = commande.str());
             },
             [](auto commande){ std::wcout << commande << std::endl; }
@@ -59,10 +78,10 @@
 
     int main()
     {
-        preparer(repas);
+        prendreConnaissance(repas);
         presenter(repas);
 
-        preparer(repas);
+        prendreConnaissance(repas);
         presenter(repas);
     }
 #endif
