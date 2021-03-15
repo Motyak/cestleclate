@@ -7,7 +7,19 @@ then
 fi
 
 # remove shebang
-perl -pe 's/^#!.*\n(?:.*)/$1/' $SRC |
+CODE="$(perl -pe 's/^#!.*$//' $SRC)"
+
+# remove includes of local header files
+CODE="$(echo "$CODE" | perl -pe 's/#include ".*\.h"//')"
+
+# add local header files
+HEADER_FILES="$(ls *.h)"
+for f in $HEADER_FILES
+do
+	CODE="$(echo "$(cat $f)" && echo "$CODE")"
+done
+
+echo "$CODE" |
 
 # substitute prices with currency in front
 perl -pe 's/\$([0-9]+(?:\.[0-9]{1,2})?)/Prix{'\''\$'\'', $1}/g' |
