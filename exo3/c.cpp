@@ -1,3 +1,4 @@
+#!/bin/transpiler
 #include "Repas.h"
 
 #ifdef client

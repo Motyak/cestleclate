@@ -16,7 +16,7 @@ CODE="$(echo "$CODE" | perl -pe 's/#include ".*\.h"//')"
 HEADER_FILES="$(ls *.h)"
 for f in $HEADER_FILES
 do
-	CODE="$(echo "$(cat $f)" && echo "$CODE")"
+	CODE="$(cat $f && echo "$CODE")"
 done
 
 echo "$CODE" |
