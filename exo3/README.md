@@ -1,22 +1,36 @@
-# BUILD BINARIES
-```console
-$ ./build.sh
-```
-
 # RUN (COMMUNICATION WITH A PIPE)
 ```console
-$ ./client | ./serveur
-<...>
+$ prog='eval cplusplus <(./c.cpp) -D'; $prog client | $prog serveur
+Double cheese: 1x
+Total: 3.50EUR 440Cal.
+Cheeseburger: 1x
+Frites moyenne: 1x
+Total: 4.40EUR 540Cal.
 ```
 
 # RUN (COMMUNICATION THROUGH A NETWORK)
 ```console
-<server machine>$ nc -l localhost 55555 | ./serveur
+user1@server$ nc -l localhost 55555 | cplusplus <(./c.cpp) -D serveur
 ```
 ```console
-<client machine>$ ./client | nc localhost 55555 -q1
+user2@client$ cplusplus <(./c.cpp) -D client | nc localhost 55555 -q1
 ```
 ```console
-<...>
-<server machine>$
+Double cheese: 1x
+Total: 3.50EUR 440Cal.
+Cheeseburger: 1x
+Frites moyenne: 1x
+Total: 4.40EUR 540Cal.
+user1@server$
+```
+
+# BUILD AND RUN BINARIES
+```console
+$ for prog in client serveur; do g++ -x c++ <(./c.cpp) -D $prog -o $prog -I . -std=c++17; done
+$ ./client | ./serveur
+Double cheese: 1x
+Total: 3.50EUR 440Cal.
+Cheeseburger: 1x
+Frites moyenne: 1x
+Total: 4.40EUR 540Cal.
 ```
