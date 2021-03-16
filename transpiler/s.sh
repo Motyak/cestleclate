@@ -13,7 +13,7 @@ CODE="$(perl -pe 's/^#!.*$//' $SRC)"
 CODE="$(echo "$CODE" | perl -pe 's/#include ".*\.h"//')"
 
 # add local header files
-HEADER_FILES="$(ls *.h)"
+HEADER_FILES="$(ls *.h 2>/dev/null)"
 for f in $HEADER_FILES
 do
 	CODE="$(cat $f && echo "$CODE")"
