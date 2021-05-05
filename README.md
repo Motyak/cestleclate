@@ -12,3 +12,8 @@ $ sh <(curl -sS https://raw.githubusercontent.com/Motyak/cestleclate/master/show
 ```console
 $ sh <(curl -sS https://raw.githubusercontent.com/Motyak/cestleclate/master/transpiler/install.sh)
 ```
+
+# INSTALL SHBANG (needs sudo)
+```console
+$ sh <(curl -sS https://raw.githubusercontent.com/Motyak/cestleclate/master/shbang/install.sh)
+```
