@@ -7,21 +7,21 @@ enum Couleur
 };
 
 const char *ansicode[] = {
-    "", 
+    "\u001b[37m",
     "\u001b[34m", "\u001b[32m", "\u001b[30m", "\u001b[31m"
 };
 
 class StyloQuatreCouleurs
 {
     Couleur stylo = AUCUNE;
-    
+
   public:
-  
+
     StyloQuatreCouleurs()
     {
         std::cout << "\u001b[47m";
     }
-    
+
     ~StyloQuatreCouleurs()
     {
         std::cout << "\u001b[0m" << std::endl;
@@ -32,7 +32,7 @@ class StyloQuatreCouleurs
         std::cout << ansicode[this->stylo] << mots;
         return this;
     }
-    
+
     StyloQuatreCouleurs* changer(Couleur stylo)
     {
         this->stylo = stylo;
