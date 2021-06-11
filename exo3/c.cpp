@@ -2,8 +2,6 @@
 #include "Repas.h"
 
 #ifdef client
-    Choix::Items menu;
-
     std::ostream& operator<<(std::ostream& os, const Repas& repas)
     {
         (cereal::BinaryOutputArchive(os))(repas);
@@ -14,11 +12,11 @@
 
     int main()
     {
-        commander(Repas{4.00€});
+        commander(Repas{7.00€});
 
-        menu[Choix::Item::CHEESEBURGER] = 1x;
-        menu[Choix::Item::FRITES_MOYENNE] = 1x;
-        commander(Repas{menu});
+        commander(Repas{Menu::LE_GOURMAND});
+
+        commander(Repas{HAMBURGER | FRITES | COCA});
     }
 #endif
 
@@ -38,38 +36,32 @@
         std::visit(overload{
             [&](const Budget& budget)
             {
-                Choix::Items items;
-
-                if(budget.valeur >= 6.40)
-                    items[Choix::Item::FRITES_GRANDE] = 1x;
-                if(budget.valeur >= 3.50)
-                    items[Choix::Item::DOUBLE_CHEESE] = 1x;
-                else if(budget.valeur >= 1.90)
-                    items[Choix::Item::CHEESEBURGER] = 1x;
-
-                presenter(repas = items);
+                if(budget.valeur >= 9.60)
+                    presenter(repas = Menu::LE_GOURMAND);
+                else if(budget.valeur >= 6.60)
+                    presenter(repas = Menu::LA_CLASSIQUE);
+                else /* pas assez d'argent */
+                    presenter(repas = Menu::LE_PAUVRE);
             },
-            [&](const Choix::Items& items)
+            [&](const Items& items)
             {
-                const wchar_t devise = (*Choix::prix).devise;
-                struct{Prix prix={devise,0.0}; Calories cal=0;} total;
+                struct{Prix prix={L'€',0.0}; Calories cal=0;} total;
                 std::wostringstream commande;
                 commande.precision(2);
                 commande.setf(std::ios::fixed);
-
-                for (const auto& [item, quantite] : items)
+                
+                for(int i = (1 << 0); i < (1 << 8); (i <<= 1))
                 {
-                    total.prix.valeur += Choix::prix[item].valeur * quantite;
-                    total.cal += Choix::cal[item] * quantite;
-                    commande << Choix::str[item] << ": " << quantite 
-                             << "x" << std::endl;
+                    if((items & i) == i)
+                    {
+                        const Item& item = static_cast<Item>(i);
+                        total.prix.valeur += info.at(item).prix.valeur;
+                        total.cal += info.at(item).cal;
+                        commande << info.at(item).nom << ": x1" << std::endl;
+                    }
                 }
-                commande << "Total: ";
-                if(devise == '$')
-                    commande << devise << total.prix.valeur ;
-                else
-                    commande << total.prix.valeur << devise;
-                commande << ' ' << total.cal << "Cal." ;
+                commande << "Total: " << total.prix.valeur << total.prix.devise;
+                commande << ' ' << total.cal << "Cal." << std::endl;
 
                 presenter(repas = commande.str());
             },
@@ -79,6 +71,9 @@
 
     int main()
     {
+        prendreConnaissance(repas);
+        presenter(repas);
+
         prendreConnaissance(repas);
         presenter(repas);
 
