@@ -3,17 +3,13 @@
 const std::shared_ptr<int> bowling::CompteurScore::AUCUN_SUCCESSEUR = std::make_shared<LancerUnique>(0);
 
 
-bowling::CompteurScore::TourSimple::TourSimple(const bowling::Tour& t) : tour(t){}
+bowling::CompteurScore::TourSimple::TourSimple(int score) : score(score){}
 bowling::CompteurScore::TourSpare::TourSpare(const std::shared_ptr<LancerUnique>& s) : lancerSuccesseur(s){}
 bowling::CompteurScore::TourStrike::TourStrike(const std::shared_ptr<LancerUnique>& s1, const std::shared_ptr<LancerUnique>& s2) : TourSpare(s1), lancerSuccesseurSuccesseur(s2){}
 
 int bowling::CompteurScore::TourSimple::compterScore() const
 {
-    return std::visit(overload{
-        // coup bonus
-        [](LancerUnique lancer) -> int {return lancer;},
-        [](DeuxLancers lancers) -> int {return lancers.first + lancers.second;}
-    }, this->tour); 
+    return this->score;
 }
 
 int bowling::CompteurScore::TourSpare::compterScore() const
@@ -29,6 +25,9 @@ int bowling::CompteurScore::TourStrike::compterScore() const
 
 bowling::CompteurScore::CompteurScore(const bowling::Partie& p)
 {
+    // fonction pour construire un type de tour et l'ajouter en début de partie
+    auto ajouterTour = [this](std::unique_ptr<Tour>&& tour){partie.insert(partie.begin(), std::move(tour));};
+
     std::shared_ptr<LancerUnique> lancerSuccesseur = AUCUN_SUCCESSEUR;
     std::shared_ptr<LancerUnique> lancerSuccesseurSuccesseur = AUCUN_SUCCESSEUR;
 
@@ -40,19 +39,19 @@ bowling::CompteurScore::CompteurScore(const bowling::Partie& p)
             [&](LancerUnique lancer)
             {
                 if(lancer == bowling::NB_QUILLES_MAX)
-                    this->partie.insert(this->partie.begin(), std::make_unique<TourStrike>(lancerSuccesseur, lancerSuccesseurSuccesseur));
+                    ajouterTour(std::make_unique<TourStrike>(lancerSuccesseur, lancerSuccesseurSuccesseur));
                 else /* coup bonus */
-                    this->partie.insert(this->partie.begin(), std::make_unique<TourSimple>(lancer));
+                    ajouterTour(std::make_unique<TourSimple>(lancer));
                     
                 lancerSuccesseurSuccesseur = lancerSuccesseur;
                 lancerSuccesseur = std::make_shared<LancerUnique>(lancer);
             },
-            [&](DeuxLancers lancers)
+            [&](const DeuxLancers& lancers)
             {
                 if(lancers.first + lancers.second == bowling::NB_QUILLES_MAX)
-                    this->partie.insert(this->partie.begin(), std::make_unique<TourSpare>(lancerSuccesseur));
+                    ajouterTour(std::make_unique<TourSpare>(lancerSuccesseur));
                 else
-                    this->partie.insert(this->partie.begin(), std::make_unique<TourSimple>(lancers));
+                    ajouterTour(std::make_unique<TourSimple>(lancers.first + lancers.second));
 
                 lancerSuccesseur = std::make_shared<LancerUnique>(lancers.first);
                 lancerSuccesseurSuccesseur = std::make_shared<LancerUnique>(lancers.second);

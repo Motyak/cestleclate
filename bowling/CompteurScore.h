@@ -19,9 +19,9 @@ namespace bowling
         
         struct TourSimple : public Tour
         {
-            bowling::Tour tour;
+            int score = 0;
 
-            TourSimple(const bowling::Tour&);
+            TourSimple(int score);
             int compterScore() const;
         };
 
