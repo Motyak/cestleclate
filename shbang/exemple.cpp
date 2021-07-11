@@ -1,4 +1,4 @@
-#!/bin/shbang transpiler ... | cplusplus - -pthread
+#!/bin/shbang transpiler $f | cplusplus - -pthread
 #include <iostream>
 #include <ctime>
 #include <cstring>
