@@ -16,13 +16,6 @@ perl -pe 's/^#!.*\n\n?((.|\n)*)/$1/g' $SRC |
 # make void functions return 'nada' (custom type)
 perl -pe 's/void ([a-zA-Z][a-zA-Z0-9_]*\(.*\))/nada $1/g' |
 
-# subsitute milliseconds
-perl -pe 's/([0-9]+(?:\.[0-9]+)?)ms/std::chrono::milliseconds($1)/g' |
-# subsitute seconds
-perl -pe 's/([0-9]+(?:\.[0-9]+)?)s/std::chrono::seconds($1)/g' |
-# subsitute minutes
-perl -pe 's/([0-9]+(?:\.[0-9]+)?)m/std::chrono::minutes($1)/g' |
-
 # substitute prices with currency in front
 perl -pe 's/\$([0-9]+(?:\.[0-9]{1,2})?)/Prix{'\''\$'\'', $1}/g' |
 # substitute prices with currency in back

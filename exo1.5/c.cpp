@@ -1,5 +1,6 @@
 #!/bin/transpiler
 #include "includes.h" // iostream, ctime, cstring, chrono, thread
+using namespace std::chrono_literals;
 
 using Temps = std::time_t;
 using Duree = std::chrono::duration<double>;
