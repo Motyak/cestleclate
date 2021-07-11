@@ -28,4 +28,5 @@ perl -pe 's/^#!.*\n\n?((.|\n)*)/$1/g' $SRC |
 perl -pe 's/void ([a-zA-Z][a-zA-Z0-9_]*\(.*\))/nada $1/g' |
 
 # replace source file header to add custom definitions
-X=$(echo -e "$header") perl -pe 's/((?:.|\n)*#include.*\n)((?:.|\n)*)/$1\n$ENV{X}\n$2/g'
+X=$(echo -e "$header") perl -0pe 's/(#include.*\n(?!#))(.*)/$1\n$ENV{X}\n$2/g'
+
