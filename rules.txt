@@ -15,3 +15,9 @@ Format rules:
 -Well indented > 36 lines long > 60 characters wide
 	(Sometime it's impossible => priorities)
 -Try making oneline functions (but only if it makes sense)
+
+
+
+
+Mettre tous les fichiers en LF, tabulation avec tab, et toujours mettre une ligne
+	vide en fin de fichier.
