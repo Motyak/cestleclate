@@ -1,14 +1,14 @@
 # INSTALL CPLUSPLUS (needs sudo)
 ```console
-$ sh <(curl -sS https://raw.githubusercontent.com/Motyak/cestleclate/master/cplusplus/install.sh)
+$ sh <(curl -sS https://raw.githubusercontent.com/Motyak/cestleclate/simple/cplusplus/install.sh)
 ```
 
 # INSTALL SHOWMAIN (needs sudo)
 ```console
-$ sh <(curl -sS https://raw.githubusercontent.com/Motyak/cestleclate/master/showmain/install.sh)
+$ sh <(curl -sS https://raw.githubusercontent.com/Motyak/cestleclate/simple/showmain/install.sh)
 ```
 
 # INSTALL TRANSPILER (needs sudo)
 ```console
-$ sh <(curl -sS https://raw.githubusercontent.com/Motyak/cestleclate/master/transpiler/install.sh)
+$ sh <(curl -sS https://raw.githubusercontent.com/Motyak/cestleclate/simple/transpiler/install.sh)
 ```

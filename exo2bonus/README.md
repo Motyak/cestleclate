@@ -3,9 +3,9 @@
 $ f=c.cpp; showmain $f && transpiler $f | cplusplus -pthread -
 int main()
 {
-    afficher(heure);
-    attendre(3s);
-    afficher(heure);
+	afficher(heure);
+	attendre(3s);
+	afficher(heure);
 }
 Mon Feb 15 01:50:03 2021
 Mon Feb 15 01:50:06 2021
@@ -16,9 +16,9 @@ Mon Feb 15 01:50:06 2021
 $ f=c.cpp; showmain $f && cplusplus <(./$f) -pthread
 int main()
 {
-    afficher(heure);
-    attendre(3s);
-    afficher(heure);
+	afficher(heure);
+	attendre(3s);
+	afficher(heure);
 }
 Mon Feb 15 01:50:03 2021
 Mon Feb 15 01:50:06 2021
