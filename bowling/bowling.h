@@ -8,6 +8,7 @@ namespace bowling
 {
     const int NB_QUILLES_MAX = 10;
     const int NB_TOURS_MAX = 10;
+    const int SCORE_INITIAL = 0;
 
     using LancerUnique = int;
     using DeuxLancers = std::pair<int,int>;
