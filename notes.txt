@@ -1,0 +1,6 @@
+Faire en sorte que les définitions du header.hpp
+ne soient importées que si elles sont utilisées
+(compter le nombre de substitutions, si c'est
+égal à 0 pour une définition, alors on l'ajoute pas).
+Découper le header.hpp en plusieurs fichiers hpp
+dans un dossier header.

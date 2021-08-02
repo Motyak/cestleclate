@@ -3,8 +3,8 @@
 $ f=c.cpp; showmain $f && transpiler $f | cplusplus -
 int main()
 {
-	prix = $99.99 - 25%;
-	afficher(prix);
+    prix = $99.99 - 25%;
+    afficher(prix);
 }
 $74.99
 ```
@@ -14,8 +14,8 @@ $74.99
 $ f=c.cpp; showmain $f && cplusplus <(./$f)
 int main()
 {
-	prix = $99.99 - 25%;
-	afficher(prix);
+    prix = $99.99 - 25%;
+    afficher(prix);
 }
 $74.99
 ```
@@ -25,8 +25,8 @@ $74.99
 $ f=$(curl -sS https://raw.githubusercontent.com/Motyak/cestleclate/simple/exo2/c.cpp); echo "$f" | showmain - && echo "$f" | transpiler | cplusplus -
 int main()
 {
-	prix = $99.99 - 25%;
-	afficher(prix);
+    prix = $99.99 - 25%;
+    afficher(prix);
 }
 $74.99
 ```
