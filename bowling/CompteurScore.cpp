@@ -23,7 +23,7 @@ int bowling::CompteurScore::TourStrike::compterScore() const
 }
 
 
-bowling::CompteurScore::CompteurScore(const bowling::Partie& p)
+bowling::CompteurScore::CompteurScore(bowling::Partie&& p)
 {
     // fonction pour construire un type de tour et l'ajouter en début de partie
     auto ajouterTour = [this](std::unique_ptr<Tour>&& tour){partie.insert(partie.begin(), std::move(tour));};

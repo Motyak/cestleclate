@@ -19,7 +19,7 @@ namespace bowling
         
         struct TourSimple : public Tour
         {
-            int score = bowling::SCORE_INITIAL;
+            int score;
 
             TourSimple(int score);
             int compterScore() const override;
@@ -45,7 +45,7 @@ namespace bowling
         Partie partie;
 
       public:
-        CompteurScore(const bowling::Partie&);
+        CompteurScore(bowling::Partie&&);
         int operator()() const;
     };
 };
