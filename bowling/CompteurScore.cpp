@@ -1,5 +1,7 @@
 #include "CompteurScore.h"
 
+#include <numeric>
+
 const std::shared_ptr<int> bowling::CompteurScore::AUCUN_SUCCESSEUR = std::make_shared<LancerUnique>(0);
 
 
@@ -62,9 +64,10 @@ bowling::CompteurScore::CompteurScore(bowling::Partie&& p)
 
 int bowling::CompteurScore::operator()() const
 {
-    int sum = 0;
-    for(int i = 0; i < this->partie.size() && i < bowling::NB_TOURS_MAX; ++i)
-        sum += this->partie[i]->compterScore();
-        
-    return sum;
+    return std::accumulate(
+        this->partie.cbegin(),
+        this->partie.cend(),
+        0,
+        [](int i, auto& t) -> int { return i + (*t).compterScore(); }
+    );
 }
