@@ -43,12 +43,12 @@ class StyloQuatreCouleurs
 int main()
 {
     stylo.ecrire("Je")
-      -> changer(Couleur::BLEUE)
+        -> changer(Couleur::BLEUE)
         -> ecrire("Je peux écrire en bleu,")
-          -> changer(Couleur::VERTE)
-            -> ecrire("en vert, ")
-              -> changer(Couleur::NOIRE)
-                -> ecrire("en noir ")
-                  -> changer(Couleur::ROUGE)
-                    -> ecrire("et en rouge !");
+        -> changer(Couleur::VERTE)
+        -> ecrire("en vert, ")
+        -> changer(Couleur::NOIRE)
+        -> ecrire("en noir ")
+        -> changer(Couleur::ROUGE)
+        -> ecrire("et en rouge !");
 }
