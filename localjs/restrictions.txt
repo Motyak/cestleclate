@@ -1,0 +1,51 @@
+ILLEGAL ON ALL PLATFORMS
+
+Illegal characters: '\0', '/'
+
+-----------------------------------
+
+MACOS AND LINUX SPECIFICALY
+
+Max number of characters: 255
+
+-----------------------------------
+
+MACOS AND WINDOWS SPECIFICALY
+
+Illegal characters: ':'
+
+-----------------------------------
+
+MACOS SPECIFICALY
+
+Filenames are not permitted to begin with a dot "."
+
+-----------------------------------
+
+WINDOWS SPECIFICALY
+
+Max number of characters: 260
+Illegal characters: \*?"<>|
+Illegal filenames: 
+CON
+PRN
+AUX
+NUL
+COM1
+COM2
+COM3
+COM4
+COM5
+COM6
+COM7
+COM8
+COM9
+LPT1
+LPT2
+LPT3
+LPT4
+LPT5
+LPT6
+LPT7
+LPT8
+LPT9

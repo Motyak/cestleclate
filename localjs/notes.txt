@@ -1,0 +1,13 @@
+Refactor js code
+
+!MVP :
+D'un point de vue apparence, faire en sorte que l'input soit au dessus
+du bouton download, et que ces deux élements soient constamment centrés
+au milieu de la page et qu'ils aient une taille propice.
+  -> styling css / tailwind
+
+
+
+
+&#10004; -- tick
+&#10060; -- cross

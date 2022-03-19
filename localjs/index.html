@@ -1,0 +1,176 @@
+length:
+<span id="inputLength">0</span>
+<input type="text" placeholder="filename" autofocus></input>
+<button disabled>download file</button>
+<div id="checkboxPanel" hidden>
+  <label>i know what i'm doing</label>
+  <input id="checkbox" type="checkbox"></input>
+</div>
+<br>
+supported on
+<table>
+  <tr>
+    <th>windows</th>
+    <th>macos</th>
+    <th>linux</th>
+  </tr>
+  <tr>
+    <td id="windowsSupport">&#10060;</td>
+    <td id="macosSupport">&#10060;</td>
+    <td id="linuxSupport">&#10060;</td>
+  </tr>
+</table>
+<p id="msg">input is empty</p>
+
+<script>
+  const checkRules = (input) => {
+
+    const fillInvalidFieldThenReturn = (res) => {
+      res.invalid = Object.values(res).some(e => e == true)
+      return res
+    }
+
+    input = input.trim()
+    res = {}
+
+    // if input is empty (illegal input)
+    if(input.length == 0) {
+      res.empty = true
+      res.msg = 'input is empty'
+      return fillInvalidFieldThenReturn(res)
+    }
+    
+    // if input contains '/' (illegal on all platforms)
+    if(input.match(/.*\/.*/g)) {
+      res.windows = res.macos = res.linux = true
+      res.msg = "input contains '/'"
+      return fillInvalidFieldThenReturn(res)
+    }
+
+    // if input has more than 255 characters (illegal on macos and linux)
+    if(input.length > 255) {
+      res.macos = res.linux = true
+      res.msg = 'input has more than 255 characters'
+      if(res.windows) {
+        return fillInvalidFieldThenReturn(res)
+      }
+    }
+
+    // if input contains ':' (illegal on macos and windows)
+    if(input.match(/.*:.*/g)) {
+      res.windows = res.macos = true
+      res.msg = "input contains ':'"
+      if(res.linux) {
+        return fillInvalidFieldThenReturn(res)
+      }
+    }
+
+    // if input starts with dot (illegal on macos)
+    if(input[0] == '.') {
+      res.macos = true
+      res.msg = "input starts with '.'"
+      if(res.windows && res.linux) {
+        return fillInvalidFieldThenReturn(res)
+      }
+    }
+
+    /* illegal on windows */
+    const ILLEGAL_FILENAMES = [
+      'CON','PRN','AUX','NUL',
+      'COM1','COM2','COM3','COM4','COM5','COM6','COM7','COM8','COM9',
+      'LPT1','LPT2','LPT3','LPT4','LPT5','LPT6','LPT7','LPT8','LPT9',
+    ]
+
+    // if input length exceeds 260
+    if(input.length > 260) {
+      res.windows = true
+      res.msg = 'input has more than 260 characters'
+      return fillInvalidFieldThenReturn(res)
+    }
+
+    // if input has illegal characters
+    if(input.match(/.*[\\*?"<>|].*/g)) {
+      res.windows = true
+      res.msg = 'input contains one of these characters : \\*?"<>|'
+      return fillInvalidFieldThenReturn(res)
+    }
+
+    // if input is an illegal filename
+    if(ILLEGAL_FILENAMES.includes(input)) {
+      res.windows = true
+      res.msg = 'input is part of invalid filenames : ' + ILLEGAL_FILENAMES.toString()
+    }
+
+    return fillInvalidFieldThenReturn(res)
+  }
+
+  const updateTable = (issues) => {
+    WINDOWS_CELL = document.getElementById('windowsSupport')
+    MACOS_CELL = document.getElementById('macosSupport')
+    LINUX_CELL = document.getElementById('linuxSupport')
+
+    if(!issues.invalid) {
+      WINDOWS_CELL.innerHTML =  MACOS_CELL.innerHTML = LINUX_CELL.innerHTML = '&#10004;'
+      return
+    }
+
+    if(issues.empty) {
+      WINDOWS_CELL.innerHTML =  MACOS_CELL.innerHTML = LINUX_CELL.innerHTML = '&#10060;'
+      return
+    }
+
+    WINDOWS_CELL.innerHTML = issues.windows ? '&#10060;' : '&#10004;'
+    MACOS_CELL.innerHTML = issues.macos ? '&#10060;' : '&#10004;'
+    LINUX_CELL.innerHTML = issues.linux ? '&#10060;' : '&#10004;'
+  }
+
+  const updateState = () => {
+    input = document.getElementsByTagName('input')[0].value
+
+    /* update input length */
+    inputLength = document.getElementById('inputLength')
+    inputLength.innerHTML = input.length
+
+    issues = checkRules(input)
+    console.log(issues)//debug
+
+    updateTable(issues)
+
+    /* update button */
+    button = document.getElementsByTagName('button')[0]
+    button.disabled = issues.invalid
+
+    /* update msg */
+    msg = document.getElementById('msg')
+    msg.innerHTML = issues.msg ? issues.msg : ''
+
+    /* update checkbox panel */
+    checkboxPanel = document.getElementById('checkboxPanel')
+    delete issues.invalid
+    delete issues.msg
+    delete issues.empty
+    nbOfIncompatiblePlatforms = Object.keys(issues).length
+    shouldAppear = nbOfIncompatiblePlatforms > 0 && nbOfIncompatiblePlatforms < 3
+    checkboxPanel.hidden = shouldAppear ? '' : 'hidden'
+    checkbox = document.getElementById('checkbox')
+    checkbox.checked = false
+  }
+
+  const downloadFile = () => {
+    tmplink = document.createElement('a')
+    tmplink.href = 'data:attachment/text,'
+    tmplink.download = document.getElementsByTagName('input')[0].value
+    tmplink.click()
+  }
+
+  const onCheckboxChanged = () => {
+    button = document.getElementsByTagName('button')[0]
+    checkbox = document.getElementById('checkbox')
+
+    button.disabled = !checkbox.checked
+  }
+
+  document.getElementsByTagName('input')[0].addEventListener('input', updateState)
+  document.getElementsByTagName('button')[0].addEventListener('click', downloadFile)
+  document.getElementById('checkbox').addEventListener('change', onCheckboxChanged)
+</script>
