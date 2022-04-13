@@ -1,0 +1,20 @@
+# on récupère un fichier à chiffrer
+cp /bin/echo .
+
+# on encode le fichier input en base64
+base64 echo > echo.txt
+
+# on crée une clé qui fait la même taille que le fichier txt
+yes motyak | head -c $(wc -c echo.txt | awk '{print $1}') > key
+
+# on fait un xor entre l'input txt et la clé
+xor "$(< key)" < echo.txt > encrypted
+
+# on fait un xor entre le fichier chiffré et la clé
+xor "$(< key)" < encrypted > out.txt
+
+# on décode le base64
+base64 -d out.txt > out
+
+# on vérifie l'intégrité du fichier obtenu
+diff -s echo out
