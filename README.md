@@ -17,3 +17,8 @@ $ sh <(curl -sS https://raw.githubusercontent.com/Motyak/cestleclate/master/tran
 ```console
 $ sh <(curl -sS https://raw.githubusercontent.com/Motyak/cestleclate/master/shbang/install.sh)
 ```
+
+# INSTALL XOR (needs sudo)
+```console
+$ sh <(curl -sS https://raw.githubusercontent.com/Motyak/cestleclate/master/xor/install.sh)
+```
