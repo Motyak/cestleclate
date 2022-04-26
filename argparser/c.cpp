@@ -60,11 +60,11 @@ enum ArgType
 
 // map qui associe chaque converter de string vers x, pour x dans ArgType
 const std::map<ArgType,std::function<Arg(const std::string&)>> converter {
-    { ArgType::DOUBLE, [](const std::string& str)->Arg{return stod(str);} },
-    { ArgType::LONG_LONG, [](const std::string& str)->Arg{return stoll(str);} },
-    { ArgType::CHAR, [](const std::string& str)->Arg{return str.at(0);} },
-    { ArgType::BOOL, [](const std::string& str)->Arg{return toupper(str[0])=='T'?true:false;} },
-    { ArgType::STRING, [](const std::string& str)->Arg{return str;} }
+    { ArgType::DOUBLE, [](const std::string& str){return stod(str);} },
+    { ArgType::LONG_LONG, [](const std::string& str){return stoll(str);} },
+    { ArgType::CHAR, [](const std::string& str){return str[0];} },
+    { ArgType::BOOL, [](const std::string& str){return toupper(str[0])=='T'?true:false;} },
+    { ArgType::STRING, [](const std::string& str){return str;} }
 };
 
 unsigned char nextArgType(const std::string& args)
