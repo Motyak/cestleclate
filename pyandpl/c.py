@@ -19,7 +19,7 @@ class today:
 
 def yearProgress(yday=today.yday(), year=today.year()):
     isLeapYear = year % 4 == 0
-    nbOfDaysInYear = 365 + 1 * int(isLeapYear)
+    nbOfDaysInYear = 365 + int(isLeapYear)
     percentage = math.floor(yday / nbOfDaysInYear * 100)
     return f'{percentage}%'
 

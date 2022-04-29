@@ -1,10 +1,8 @@
 #!/usr/bin/env perl
 
-use POSIX qw(strftime floor);
-
 package utils;
-sub parseArgs
-{
+
+sub parseArgs {
     my ($userInput, $sep) = @_;
     $sep //= ';';
 
@@ -12,41 +10,32 @@ sub parseArgs
 }
 
 package today;
-sub yday { return main::strftime('%-j', localtime); }
-sub year { return main::strftime('%Y' , localtime); }
+use POSIX 'strftime';
+
+sub yday { return strftime('%-j', localtime); }
+sub year { return strftime('%Y' , localtime); }
 
 package main;
+use POSIX 'floor';
 
-sub yearProgress
-{
+sub yearProgress {
     my ($yday, $year) = @_;
     $yday //= today::yday();
     $year //= today::year();
 
     my $isLeapYear = $year % 4 == 0;
-    my $nbOfDaysInYear = 365 + 1 * $isLeapYear;
+    my $nbOfDaysInYear = 365 + $isLeapYear;
     my $percentage = floor($yday / $nbOfDaysInYear * 100);
     return $percentage . '%';
 }
 
-sub yearProgressFromStr
-{
+sub yearProgressFromStr {
     my ($str) = @_;
 
-    if($str eq '')
-    {
-        return yearProgress();
-    }
     my @args = utils::parseArgs($str);
-
-    return yearProgress(@args);
+    $str eq '' ? yearProgress() : yearProgress(@args)
 }
 
-my @input;
-while (<STDIN>)
-{
-    push @input, $_;
-}
-my $userInput = join('', @input);
-my $res = yearProgressFromStr($userInput);
+my $input = join('', <STDIN>);
+my $res = yearProgressFromStr($input);
 print($res);
