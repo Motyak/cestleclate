@@ -63,7 +63,7 @@ const std::map<ArgType,std::function<Arg(const std::string&)>> converter {
     { ArgType::DOUBLE, [](const std::string& str){return stod(str);} },
     { ArgType::LONG_LONG, [](const std::string& str){return stoll(str);} },
     { ArgType::CHAR, [](const std::string& str){return str[0];} },
-    { ArgType::BOOL, [](const std::string& str){return toupper(str[0])=='T'?true:false;} },
+    { ArgType::BOOL, [](const std::string& str){return toupper(str[0])=='T';} },
     { ArgType::STRING, [](const std::string& str){return str;} }
 };
 
