@@ -11,9 +11,7 @@ if(isset($_POST["explorer"]))
 <button type="button" class="bg-blue-500 hover:bg-blue-400 text-white font-bold text-9xl w-screen h-screen">OPEN EXPLORER</button>
 
 <script>
-    $(document).ready(() => {
-        $("button").click(() => {
-            $.post({data: {explorer: ''}});
-        })
-    });
+	$("button").click(() => {
+		$.post({data: {explorer: ''}});
+	})
 </script>

@@ -50,31 +50,55 @@ Fraction& Fraction::operator*=(const Fraction& rhs)
     *this = {a * c, b * d};
 }
 
+
+void Fraction::ecrire(std::ostream& os) const {
+    os << this->numerateur << "/" << this->denominateur;
+}
+
 std::ostream& operator<<(std::ostream& os, const Fraction& frac)
 {
-    return os << frac.numerateur << "/" << frac.denominateur;
+    frac.ecrire(os);
+    return os;
+}
+
+bool Fraction::estEgal(const Fraction& other) const {
+    return this->numerateur == other.denominateur
+        && this->denominateur == other.denominateur; 
+}
+
+ResultatComparaison Fraction::comparer(const Fraction& rhs) const {
+    float lhs_numeric = this->numerateur / this->denominateur;
+    float rhs_numeric = rhs.numerateur / rhs.denominateur;
+
+    if(this->estEgal(rhs)) {
+        return ResultatComparaison::EGAL;
+    } else if(lhs_numeric > rhs_numeric) {
+        return ResultatComparaison::PLUS_GRAND;
+    } else {
+        return ResultatComparaison::PLUS_PETIT;
+    }
 }
 
 bool operator>(const Fraction& lhs, const Fraction& rhs)
 {
-    return (lhs.numerateur/lhs.denominateur)
-         > (rhs.numerateur/rhs.denominateur);
+    return lhs.comparer(rhs) == ResultatComparaison::PLUS_GRAND; 
 }
 
 bool operator==(const Fraction& lhs, const Fraction& rhs)
 {
-    return (lhs.numerateur == rhs.denominateur)
-        && (rhs.numerateur == rhs.denominateur);
+    return lhs.comparer(rhs) == ResultatComparaison::EGAL; 
 }
 
 Fraction operator+(const Fraction& lhs, const Fraction& rhs)
 {
     Fraction copie(lhs);
-    return Fraction(copie += rhs); // on appelle le constructeur pour simplifier
+    // on appelle le constructeur pour simplifier
+    return Fraction(copie += rhs);
 }
 
 Fraction operator*(const Fraction& lhs, const Fraction& rhs)
 {
     Fraction copie(lhs);
-    return Fraction(copie *= rhs); // on appelle le constructeur pour simplifier
+    // on appelle le constructeur pour simplifier
+    return Fraction(copie *= rhs);
 }
