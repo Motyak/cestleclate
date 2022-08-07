@@ -38,8 +38,8 @@ auto wrap_try_catch(Function f) {
     return wrapped;
 }
 
-void haha(int dummy) {
-    print(std::cout, "haha\n");
+void hihi(int dummy) {
+    print(std::cout, "hihi\n");
 }
 
 void hihi() {
@@ -49,10 +49,10 @@ void hihi() {
 int main()
 {
     int a = 91;
-    auto haha_with_logging = wrap_try_catch(haha);
-    haha_with_logging(a);
+    auto hihi_int_with_logging = wrap_try_catch(static_cast<void(*)(int)>(hihi));
+    hihi_int_with_logging(a);
 
-    auto hihi_with_logging = wrap_try_catch(hihi);
+    auto hihi_with_logging = wrap_try_catch(static_cast<void(*)()>(hihi));
     hihi_with_logging();
 }
     

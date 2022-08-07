@@ -23,8 +23,8 @@ void print(std::ostream& os, const char* format, T value, Targs... Fargs)
     }
 }
 
-void log_err(const std::string& filename, int line, const std::string& msg) {
-    print(std::cerr, "[{}:L{}] {}\n", filename, line, msg);
+void log_err(const std::string& file, int line, const std::string& msg) {
+    print(std::cerr, "[{}:L{}] {}\n", file, line, msg);
 }
 
 template <class Function>
