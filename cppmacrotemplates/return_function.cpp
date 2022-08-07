@@ -1,5 +1,4 @@
 #define LOG(msg) log_err(__FILE__, __LINE__, msg)
-#define TRY(x) try_catch([=]{x});
 
 #include <iostream>
 
@@ -28,16 +27,19 @@ void log_err(const std::string& filename, int line, const std::string& msg) {
 }
 
 template <class Function>
-void try_catch(Function f) {
-    try {
-        f();
-    } catch (std::exception e) {
-        LOG("uh oh");
-    }
+auto wrap_try_catch(Function f) {
+    auto wrapped = [f](auto... args) {
+        try {
+            f(args...);
+        } catch (const std::exception& e) {
+            LOG("uh oh");
+        }
+    };
+    return wrapped;
 }
 
-void hihi(int dummy) {
-    print(std::cout, "hihi\n");
+void haha(int dummy) {
+    print(std::cout, "haha\n");
 }
 
 void hihi() {
@@ -47,11 +49,10 @@ void hihi() {
 int main()
 {
     int a = 91;
-    TRY (
-        hihi(a);
-    )
-    
-    TRY (
-        hihi();
-    )
+    auto haha_with_logging = wrap_try_catch(haha);
+    haha_with_logging(a);
+
+    auto hihi_with_logging = wrap_try_catch(hihi);
+    hihi_with_logging();
 }
+    
