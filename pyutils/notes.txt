@@ -1,0 +1,20 @@
+Improvements:
+
+- also replace '%' with hex value in the sanitize function,
+  to prevent the following issue :
+  "%2F" -> "%2F"
+  "/"   -> "%2F"
+  so instead we want :
+  "%2F" -> "%252F"
+  "/"   -> "%2F"
+
+- Support for method (more generally, functions that take
+  non-printable objects as parameters)
+
+- Support for keyword arguments (how to handle them in cache filename) 
+
+- Add decorator argument to specify a number of days from which
+  to clean the cache (e.g.: @USE_CACHING('1day')), we could store
+  a hidden file containing the last time we cached each file in cache
+
+

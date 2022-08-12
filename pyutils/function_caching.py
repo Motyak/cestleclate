@@ -48,9 +48,9 @@ def USE_CACHING(function):
     def inner(*args):
         filename = generate_filename(function, *args)
         if not_available_in_cache(filename):
+            result = function(*args)
             if cache_dir_not_yet_created():
                 create_cache_dir()
-            result = function(*args)
             write_to_cache(filename, result)
             return result
         return read_from_cache(filename)
