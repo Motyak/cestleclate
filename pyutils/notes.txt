@@ -1,4 +1,24 @@
+On devrait faire deux types de test unitaire pour chaque
+fonction qu'on teste :
+- une qui teste que les définitions sont correctement utilisées
+  (qui sera rarement modifiée à moins d'un changement de logique)
+  qui permettra de s'assurer que la logique de la fonction soit
+  toujours correcte tout en implémentant la manière de procéder
+    -> généralement test écrit avant la fonction
+
+- une qui teste l'implémentation (test de régression)
+  -> test qui se base sur l'implémentation de la fonction
+
+
 Improvements:
+
+
+  # assure we get a valid filename as output,
+  # we have no collisions on outputs,
+  # and we minimize input alteration
+
+- make a package wrapper for I/O operations, and write unit test to
+  assure it works as i would expect it to (if not, adapt the wrapper)
 
 - also replace '%' with hex value in the sanitize function,
   to prevent the following issue :
@@ -9,7 +29,7 @@ Improvements:
   "/"   -> "%2F"
 
 - Support for method (more generally, functions that take
-  non-printable objects as parameters)
+  non-printable objects as parameters -- self arg)
 
 - Support for keyword arguments (how to handle them in cache filename) 
 

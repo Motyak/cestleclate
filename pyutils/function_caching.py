@@ -1,7 +1,7 @@
 import os
 
 CACHE_DIR_PATH = './.cache'
-FILENAME_INVALID_CHARACTERS = r'<>:"/\|?*'
+FILENAME_INVALID_CHARACTERS = [chr(i) for i in [*range(0, 33), 127]] + [*r'<>:"/\|?*']
 FILENAME_MAX_LENGTH = 255
 
 
@@ -14,10 +14,10 @@ def create_cache_dir():
 
 
 def sanitize_filename(filename):
-    for c in FILENAME_INVALID_CHARACTERS:
+    for c in ['%', *FILENAME_INVALID_CHARACTERS]:
         filename = filename.replace(c, f'%{ord(c):X}')
     if len(filename) > FILENAME_MAX_LENGTH:
-        filename = hash(filename)
+        filename = str(hash(filename))
     return filename
 
 
