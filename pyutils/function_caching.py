@@ -1,7 +1,8 @@
 import os
 
 CACHE_DIR_PATH = './.cache'
-FILENAME_INVALID_CHARACTERS = [chr(i) for i in [*range(0, 33), 127]] + [*r'<>:"/\|?*']
+FILENAME_INVALID_CHARACTERS = [chr(i) for i in [*range(0, 33), 127]] +\
+    [*r'<>:"/\|?*']
 FILENAME_MAX_LENGTH = 255
 
 
