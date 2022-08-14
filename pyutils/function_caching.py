@@ -20,9 +20,9 @@ def cache_dir_not_accessible():
 
 def create_cache_dir():
     """
-    (re)creates CACHE_DIR_PATH directory with proper permissions 
+    (re)creates CACHE_DIR_PATH directory with proper permissions
     """
-    io_wrapper.create_dir(CACHE_DIR_PATH)
+    io_wrapper.create_dir(CACHE_DIR_PATH, 0o700)
 
 
 # consider we need to replace illegal characters with their

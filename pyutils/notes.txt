@@ -3,13 +3,6 @@ Improvements:
 - Support for function returning nothing
 - Support for function returning something other than string
 
-  # assure we get a valid filename as output,
-  # we have no collisions on outputs,
-  # and we minimize input alteration
-
-- make a package wrapper for I/O operations, and write unit test to
-  assure it works as i would expect it to (if not, adapt the wrapper)
-
 - Support for method (more generally, functions that take
   non-printable objects as parameters -- self arg)
 
@@ -19,4 +12,4 @@ Improvements:
   to clean the cache (e.g.: @USE_CACHING('1day')), we could store
   a hidden file containing the last time we cached each file in cache
 
-- use pickle to serialize any object to text file and deserialize it
+- use json format to (de)serialize objects

@@ -1,5 +1,6 @@
 import unittest
 import os
+import shutil
 
 import function_caching
 
@@ -11,32 +12,45 @@ class TestFunctionCaching(unittest.TestCase):
         cls.OLD_CACHE_DIR_PATH = function_caching.CACHE_DIR_PATH
         function_caching.CACHE_DIR_PATH = './.test_cache'
 
-    @classmethod
-    def tearDownClass(cls):
-        function_caching.CACHE_DIR_PATH = cls.OLD_CACHE_DIR_PATH
-
     def tearDown(self):
         if os.path.isdir(function_caching.CACHE_DIR_PATH):
-            os.rmdir(function_caching.CACHE_DIR_PATH)
+            shutil.rmtree(function_caching.CACHE_DIR_PATH)
 
     # assure that we uses the cache path constant in the package,
     # and that we return True for non-existence
+    # assure that cache is a directory and has the expected permissions
     #
     # assume the environement doesn't have a cache dir before
     # the test
-    def test_cache_dir_not_yet_created(self):
-        self.assertTrue(function_caching.cache_dir_not_yet_created())
+    def test_cache_dir_not_accessible(self):
+        self.assertTrue(function_caching.cache_dir_not_accessible())
+        with open(function_caching.CACHE_DIR_PATH, 'w') as _:
+            pass
+        self.assertTrue(function_caching.cache_dir_not_accessible())
+        os.remove(function_caching.CACHE_DIR_PATH)
         os.makedirs(function_caching.CACHE_DIR_PATH)
-        self.assertFalse(function_caching.cache_dir_not_yet_created())
+        os.chmod(function_caching.CACHE_DIR_PATH, 0o500)
+        self.assertTrue(function_caching.cache_dir_not_accessible())
+        os.chmod(function_caching.CACHE_DIR_PATH, 0o700)
+        self.assertFalse(function_caching.cache_dir_not_accessible())
 
     # assure that we uses the cache path constant in the package
+    # assure that the cache directory has the proper permissions
+    # assure that we recreate the cache directory if it already exists
     #
     # assume the environment doesn't have a cache dir before
     # the test
     def test_create_cache_dir(self):
-        self.assertFalse(os.path.isdir(function_caching.CACHE_DIR_PATH))
+        with open(function_caching.CACHE_DIR_PATH, 'w') as _:
+            pass
         function_caching.create_cache_dir()
-        self.assertTrue(os.path.isdir(function_caching.CACHE_DIR_PATH))
+        with open(f'{function_caching.CACHE_DIR_PATH}/foo', 'w') as _:
+            pass
+        function_caching.create_cache_dir()
+        self.assertEqual(0, len(os.listdir(function_caching.CACHE_DIR_PATH)))
+        self.assertTrue(os.access(function_caching.CACHE_DIR_PATH, os.R_OK))
+        self.assertTrue(os.access(function_caching.CACHE_DIR_PATH, os.W_OK))
+        self.assertTrue(os.access(function_caching.CACHE_DIR_PATH, os.X_OK))
 
     # assure that we uses the invalid characters constant as well as
     # the max length constant in the package
