@@ -1,17 +1,7 @@
-On devrait faire deux types de test unitaire pour chaque
-fonction qu'on teste :
-- une qui teste que les définitions sont correctement utilisées
-  (qui sera rarement modifiée à moins d'un changement de logique)
-  qui permettra de s'assurer que la logique de la fonction soit
-  toujours correcte tout en implémentant la manière de procéder
-    -> généralement test écrit avant la fonction
-
-- une qui teste l'implémentation (test de régression)
-  -> test qui se base sur l'implémentation de la fonction
-
-
 Improvements:
 
+- Support for function returning nothing
+- Support for function returning something other than string
 
   # assure we get a valid filename as output,
   # we have no collisions on outputs,
@@ -29,4 +19,4 @@ Improvements:
   to clean the cache (e.g.: @USE_CACHING('1day')), we could store
   a hidden file containing the last time we cached each file in cache
 
-
+- use pickle to serialize any object to text file and deserialize it

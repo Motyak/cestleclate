@@ -1,19 +1,33 @@
-import os
+import io_wrapper
 
 CACHE_DIR_PATH = './.cache'
+# consider these illegal characters  < > : " / \ | ? *
+# consider any character which ascii code is in {0,...,32,127}
+# to be illegal
 FILENAME_INVALID_CHARACTERS = [chr(i) for i in [*range(0, 33), 127]] +\
     [*r'<>:"/\|?*']
 FILENAME_MAX_LENGTH = 255
 
 
-def cache_dir_not_yet_created():
-    return not os.path.isdir(CACHE_DIR_PATH)
+def cache_dir_not_accessible():
+    """
+    returns True if CACHE_DIR_PATH doesn't exist, isn't a directory
+    or doesn't have the expected permissions
+    """
+    return not io_wrapper.dir_exists(CACHE_DIR_PATH) or \
+           not io_wrapper.file_has_permissions(CACHE_DIR_PATH, 'rwx')
 
 
 def create_cache_dir():
-    os.makedirs(CACHE_DIR_PATH, exist_ok=True)
+    """
+    (re)creates CACHE_DIR_PATH directory with proper permissions 
+    """
+    io_wrapper.create_dir(CACHE_DIR_PATH)
 
 
+# consider we need to replace illegal characters with their
+# ascii code in hexadecimal, preceded by a % sign, in order to minimize
+# the input alteration while conserving collision resistance
 def sanitize_filename(filename):
     for c in ['%', *FILENAME_INVALID_CHARACTERS]:
         filename = filename.replace(c, f'%{ord(c):X}')
@@ -29,7 +43,7 @@ def generate_filename(function, *args):
 
 def not_available_in_cache(filename):
     file_path = f'{CACHE_DIR_PATH}/{filename}'
-    return not os.path.exists(file_path)
+    return not io_wrapper.regular_file_exists(file_path)
 
 
 def write_to_cache(filename, content):
@@ -50,7 +64,7 @@ def USE_CACHING(function):
         filename = generate_filename(function, *args)
         if not_available_in_cache(filename):
             result = function(*args)
-            if cache_dir_not_yet_created():
+            if cache_dir_not_accessible():
                 create_cache_dir()
             write_to_cache(filename, result)
             return result

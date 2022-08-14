@@ -40,30 +40,18 @@ class TestFunctionCaching(unittest.TestCase):
 
     # assure that we uses the invalid characters constant as well as
     # the max length constant in the package
-    def test_sanitize_filename(self):
-        for c in function_caching.FILENAME_INVALID_CHARACTERS:
-            filename = f'foo{c}bar'
-            self.assertFalse(c in function_caching.sanitize_filename(filename))
-
-        filename = 'a' * (function_caching.FILENAME_MAX_LENGTH + 1)
-        self.assertGreater(function_caching.FILENAME_MAX_LENGTH,
-                           len(function_caching.sanitize_filename(filename)))
-
     # assure we uses % symbol + hex ascii code to replace invalid characters
     # and that we have collision resistance (only one input should be mapped
     # to a given output)
-    #
-    # consider these illegal characters  < > : " / \ | ? *
-    # consider any character which ascii code is in {0,...,32,127}
-    # to be illegal
-    # consider we need to replace illegal characters with their
-    # ascii code in hexadecimal, preceded by a % sign, in order to minimize
-    # the input alteration while conserving collision resistance
-    def test_sanitize_filename_impl(self):
+    def test_sanitize_filename(self):
         for c in function_caching.FILENAME_INVALID_CHARACTERS:
             filename = f'foo{c}bar'
             self.assertEqual(f'foo%{ord(c):X}bar',
                              function_caching.sanitize_filename(filename))
+
+        filename = 'a' * (function_caching.FILENAME_MAX_LENGTH + 1)
+        self.assertGreater(function_caching.FILENAME_MAX_LENGTH,
+                           len(function_caching.sanitize_filename(filename)))
 
         self.assertNotEqual(function_caching.sanitize_filename(r'/'),
                             function_caching.sanitize_filename(r'%2F'))
