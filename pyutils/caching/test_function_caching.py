@@ -9,7 +9,6 @@ class TestFunctionCaching(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.OLD_CACHE_DIR_PATH = function_caching.CACHE_DIR_PATH
         function_caching.CACHE_DIR_PATH = './.test_cache'
 
     def tearDown(self):
