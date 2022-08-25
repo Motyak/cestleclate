@@ -29,6 +29,10 @@ def checkIfSignaturesAreCompatible(sig1, sig2):
                 return False
     return True
 
+
+def is_defined(method):
+    return inspect.getsource(method)[1:].strip() == 'pass'
+
 class InterfaceImpl(type):
     def __init__(self, name, bases, dct):
         for base in bases:
@@ -40,7 +44,8 @@ class InterfaceImpl(type):
                 method = getattr(base, method_name)
                 method_sig = inspect.signature(method)
                 
-                assert method_name in dct, f"{name} doesn't implement {base_name}.{method_name}"
+                method_is_implemented = method_name in dct and is_defined(method)
+                assert method_is_implemented, f"{name} doesn't implement {base_name}.{method_name}"
                 cls_method = getattr(self, method_name)
                 assert callable(cls_method), f"{name}.{cls_method} isn't a callable object"
                 cls_method_sig = inspect.signature(cls_method)
@@ -74,18 +79,18 @@ class InterfaceImpl(type):
 #    write = 91
 #writer = MyNewStringWriter5()
 
-class MyNewStringWriter6(IStringWriter, metaclass=InterfaceImpl):
-    def write(self, text):
-        print('write in MyNewStringWriter6: ', str(text))
-writer = MyNewStringWriter6()
-writer.write("works")
+# class MyNewStringWriter6(IStringWriter, metaclass=InterfaceImpl):
+#     def write(self, text):
+#         print('write in MyNewStringWriter6: ', str(text))
+# writer = MyNewStringWriter6()
+# writer.write("works")
 
-class Icon:
-    def on_hover(self):
-        pass
-class AnimatedIcon(Icon, metaclass=InterfaceImpl):
-    pass
-icon = AnimatedIcon()
+# class Icon:
+#     def on_hover(self):
+#         pass
+# class AnimatedIcon(Icon, metaclass=InterfaceImpl):
+#     pass
+# icon = AnimatedIcon()
 
 #class ICon:
 #    def on_hover(self):
@@ -94,3 +99,7 @@ icon = AnimatedIcon()
 #    pass
 #icon = AnimatedIcon()
 
+class MyNewStringWriter7(IStringWriter, metaclass=InterfaceImpl):
+    def write(self, text):
+        pass
+writer = MyNewStringWriter7()
