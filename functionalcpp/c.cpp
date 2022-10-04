@@ -25,11 +25,9 @@ Estimation calculate_adjusted_estimation(Estimation raw_estimation, ErrorMargin 
     return std::ceil(raw_estimation + error_margin);
 }
 
-typedef Estimation(*RawEstimationFunction)(Set<Duration>);
-typedef ErrorMargin(*ErrorMarginFunction)(Set<Duration>, Estimation);
-typedef Estimation(*AdjustedEstimationFunction)(Estimation, ErrorMargin);
-
-// need std::function because we capture a context inside the lambda expression
+using RawEstimationFunction = std::function<Estimation(Set<Duration>)>;
+using ErrorMarginFunction = std::function<ErrorMargin(Set<Duration>, Estimation)>;
+using AdjustedEstimationFunction = std::function<Estimation(Estimation, ErrorMargin)>;
 using Estimator = std::function<Estimation(Set<Duration>)>;
 
 Estimator create_estimator(RawEstimationFunction fnA, ErrorMarginFunction fnB, AdjustedEstimationFunction fnC) {
