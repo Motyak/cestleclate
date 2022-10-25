@@ -7,10 +7,9 @@
 
 #include <iostream>
 #include <optional>
-#include <type_traits>
 
-template <class T>
-class Optional {
+template <typename T>
+struct Optional {
   private:
     std::optional<T> opt;
 
@@ -22,24 +21,20 @@ class Optional {
 
   public:
     static Optional<T> of(T value) {
-        return Optional(value);
+        return Optional{value};
     }
 
     static Optional<T> of(T* value) {
         ASSERT(value != nullptr, "passing null to Optional::of")
-        return Optional(*value);
+        return Optional{*value};
     }
 
     static Optional<T> ofNullable(T* value) {
-        if (value == nullptr) {
-            return Optional(*value);
-        } else {
-            return Optional::empty();
-        }
+        return (value == nullptr)? Optional::empty() : Optional{*value};
     }
 
     static Optional<T> empty() {
-        return Optional();
+        return Optional{};
     }
 
     T get() {
@@ -47,7 +42,7 @@ class Optional {
     }
 
     bool isPresent() {
-        return (bool)opt;
+        return (bool) opt;
     }
 
     bool isEmpty() {
@@ -89,4 +84,3 @@ int main()
     Entry entry = potentialEntry.orElse("unlucky");
     std::cout << entry << std::endl;
 }
-
