@@ -3,7 +3,8 @@
 
 #include <utils/keywords.h> // unless
 
-#include <optional>
+#include <optional> // std::optional
+#include <type_traits> // std::is_pointer
 
 template <typename T>
 struct Optional {
@@ -18,6 +19,9 @@ struct Optional {
 
   public:
     static Optional<T> of(T value) {
+        if constexpr (std::is_pointer<T>::value) {
+            return of((T*) value);
+        }
         return Optional{value};
     }
 
@@ -45,17 +49,16 @@ struct Optional {
         return isPresent()? opt.value() : other;
     }
 
-    T orElseThrow() {
-
+    T orElseThrow(std::runtime_error e = BadOptionalAccess()) {
         unless (isPresent()) {
-            throw new BadAccessError();
+            throw e;
         }
         return opt.value();
     }
 
-    class BadAccessError : public std::runtime_error {
+    class BadOptionalAccess : public std::runtime_error {
       public:
-        BadAccessError() : std::runtime_error("Bad access error"){};
+        BadOptionalAccess() : std::runtime_error("Cannot access empty Optional"){};
     };
 };
 
