@@ -1,7 +1,7 @@
 #ifndef UTILS_CLASSES_OPTIONAL_H
 #define UTILS_CLASSES_OPTIONAL_H
 
-#include <utils/keywords.h> // assert
+#include <utils/keywords.h> // unless
 
 #include <optional>
 
@@ -22,11 +22,6 @@ struct Optional {
     }
 
     static Optional<T> of(T* value) {
-        assert (value != nullptr, "passing null to Optional::of")
-        return Optional{*value};
-    }
-
-    static Optional<T> ofNullable(T* value) {
         return (value == nullptr)? Optional::empty() : Optional{*value};
     }
 
@@ -51,10 +46,11 @@ struct Optional {
     }
 
     T orElseThrow() {
-        if (isPresent()) {
-            return opt.value();
+
+        unless (isPresent()) {
+            throw new BadAccessError();
         }
-        throw new BadAccessError();
+        return opt.value();
     }
 
     class BadAccessError : public std::runtime_error {

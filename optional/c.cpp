@@ -1,10 +1,3 @@
-#define ASSERT(condition, message) \
-    if (! (condition)) { \
-        std::cerr << "Assertion `" #condition "` failed in " << __FILE__ \
-                << " line " << __LINE__ << ": " << message << std::endl; \
-        std::terminate(); \
-    }
-
 #include <iostream>
 #include <optional>
 
@@ -25,11 +18,6 @@ struct Optional {
     }
 
     static Optional<T> of(T* value) {
-        ASSERT(value != nullptr, "passing null to Optional::of")
-        return Optional{*value};
-    }
-
-    static Optional<T> ofNullable(T* value) {
         return (value == nullptr)? Optional::empty() : Optional{*value};
     }
 
@@ -54,10 +42,11 @@ struct Optional {
     }
 
     T orElseThrow() {
-        if (isPresent()) {
-            return opt.value();
+
+        if (isEmpty()) {
+            throw new BadAccessError();
         }
-        throw new BadAccessError();
+        return opt.value();
     }
 
     class BadAccessError : public std::runtime_error {
