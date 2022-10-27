@@ -37,10 +37,6 @@ struct Optional {
         return (bool) opt;
     }
 
-    bool isEmpty() {
-        return !isPresent();
-    }
-
     T orElse(T other) {
         return isPresent()? opt.value() : other;
     }

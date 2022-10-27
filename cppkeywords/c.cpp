@@ -10,7 +10,7 @@ enum Status {
     SKIPPED = 3,
     /////////////////
     last = 3,
-    size = 4
+    size = 3
 };
 
 const char* str[] = {
