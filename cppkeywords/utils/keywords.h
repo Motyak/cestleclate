@@ -8,6 +8,9 @@
 #define unless(condition) if(!(condition))
 #define until(condition) while(!(condition))
 
+#define require assert
+#define ensure assert
+
 #define assert(condition, message) \
     if (!(condition)) { \
         std::cerr << "Assertion `" #condition "` failed in " << __FILE__ \
