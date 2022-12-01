@@ -29,7 +29,7 @@ int main()
 
     status = Status::PASSED;
 
-    assert (in (Status::first, Status::last)(status), "Invalid Status");
+    assert (in (Status::first, Status::last) (status), "Invalid Status");
     
     std::cout << "There are " << Status::size << " different statuses" << std::endl;
     

@@ -41,16 +41,18 @@ struct Optional {
         return isPresent()? opt.value() : other;
     }
 
-    T orElseThrow(std::runtime_error e = BadOptionalAccess()) {
-        if (isEmpty()) {
+    T orElseThrow(std::exception e = BadOptionalAccess()) {
+        if (!isPresent()) {
             throw e;
         }
         return opt.value();
     }
 
-    class BadOptionalAccess : public std::runtime_error {
+    class BadOptionalAccess : public std::exception {
       public:
-        BadOptionalAccess() : std::runtime_error("Cannot access empty Optional"){};
+        char* what() {
+            return "Cannot access empty Optional";
+        }
     };
 };
 
