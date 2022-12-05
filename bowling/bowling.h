@@ -8,10 +8,11 @@ namespace bowling
 {
     const int NB_QUILLES_MAX = 10;
 
+    using Tours = std::initializer_list<std::vector<int>>;
+
     using LancerUnique = int;
     using DeuxLancers = std::pair<int,int>;
     using Tour = std::variant<LancerUnique,DeuxLancers>;
-    using Partie = std::vector<Tour>;
 };
 
 #endif

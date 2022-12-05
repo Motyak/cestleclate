@@ -45,7 +45,7 @@ namespace bowling
         Partie partie;
 
       public:
-        CompteurScore(bowling::Partie&&);
+        CompteurScore(Tours);
         int operator()() const;
     };
 };

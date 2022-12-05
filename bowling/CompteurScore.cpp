@@ -25,7 +25,7 @@ int bowling::CompteurScore::TourStrike::compterScore() const
 }
 
 
-bowling::CompteurScore::CompteurScore(bowling::Partie&& p)
+bowling::CompteurScore::CompteurScore(bowling::Tours tours)
 {
     // fonction pour construire un type de tour et l'ajouter en début de partie
     auto ajouterTour = [this](std::unique_ptr<Tour>&& tour){partie.insert(partie.begin(), std::move(tour));};
@@ -33,9 +33,9 @@ bowling::CompteurScore::CompteurScore(bowling::Partie&& p)
     std::shared_ptr<LancerUnique> lancerSuccesseur = AUCUN_SUCCESSEUR;
     std::shared_ptr<LancerUnique> lancerSuccesseurSuccesseur = AUCUN_SUCCESSEUR;
 
-    for(auto it = p.rbegin(); it != p.rend(); ++it)
+    for (auto it = std::rbegin(tours); it != std::rend(tours); ++it)
     {
-        const bowling::Tour& tourActuel = *it;
+        auto tourActuel = ((*it).size() == 1)? bowling::Tour((*it)[0]) : bowling::Tour(std::pair{(*it)[0], (*it)[1]});
 
         std::visit(overload{
             [&](LancerUnique lancer)
@@ -68,6 +68,6 @@ int bowling::CompteurScore::operator()() const
         this->partie.cbegin(),
         this->partie.cend(),
         0,
-        [](int i, auto& t) -> int { return i + (*t).compterScore(); }
+        [](int i, auto& t) { return i + (*t).compterScore(); }
     );
 }
