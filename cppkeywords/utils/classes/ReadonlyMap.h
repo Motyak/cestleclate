@@ -1,5 +1,5 @@
-#ifndef READONLY_MAP_H
-#define READONLY_MAP_H
+#ifndef UTILS_CLASSES_READONLY_MAP_H
+#define UTILS_CLASSES_READONLY_MAP_H
 
 template <typename K, typename V>
 class ReadonlyMap {

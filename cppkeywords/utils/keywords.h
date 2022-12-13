@@ -5,11 +5,17 @@
 #include <iostream> // std::cerr
 #include <vector> // std::vector
 
+// if condition isn't met
 #define unless(condition) if(!(condition))
+
+// while condition isn't met
 #define until(condition) while(!(condition))
 
+// when something is required
 #define require assert
-#define ensure assert
+
+// when something is required at the moment BUT could be subject to change in the future
+#define likely assert // not sure if relevant
 
 #define assert(condition, message) \
     if (!(condition)) { \
