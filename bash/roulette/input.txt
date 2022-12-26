@@ -1,0 +1,9 @@
+c
+c++
+java
+perl
+bash
+python
+javascript
+c#
+sql (pg/plsql)
