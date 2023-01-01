@@ -2,10 +2,18 @@
 
 set -Eeuo pipefail
 
+trap 'exit 1' ERR
+trap clean_and_exit EXIT
+function clean_and_exit {
+    local exit_code=$?
+    pkill -P $$ || true # terminate subprocesses, if any
+    exit $exit_code
+}
+
 function print {
     local msg=$*
 
-    echo -ne "\r${msg//LF/\\n}"
+    echo -ne "\r${msg// LF/\\n}"
 }
 
 function countdown {
@@ -16,31 +24,45 @@ function countdown {
 }
 
 function rand {
-    local min=$1;
-    local max=$2;
+    local min=$1
+    local max=$2
 
-    ret=$(curl -s "https://www.random.org/integers/?num=1&min=$min&max=$max&col=1&base=10&format=plain&rnd=new")
+    WEB_RAND_CMD='curl -s "https://www.random.org/integers/?num=1&min=$min&max=$max&col=1&base=10&format=plain&rnd=new"'
+    LOCAL_RAND_CMD='echo -n $((RANDOM % (max + 1) + min))'
+
+    ret=$(eval "$WEB_RAND_CMD || $LOCAL_RAND_CMD")
     echo -n "$ret"
 }
 
-INPUT_FILE="input.txt"
+declare -A winner
 
-ret=$(perl -pe 's/^\s*$//' $INPUT_FILE)
-[ "$ret" != "" ] || {
-    >&2 echo "input file is empty"
-    exit 1
+function pick_a_winner {
+    local file=$1
+
+    ret=$(perl -pe 's/^\s*$//' "$file")
+    [ "$ret" != "" ] || {
+        >&2 echo "input file '$file' is empty"
+        exit 1
+    }
+
+    readarray -t choices <<< "$ret"
+    
+    min=0
+    max=$((${#choices[@]} - 1)) # arr size -1
+    random_i=$(rand $min $max)
+
+    winner["$file"]=${choices[$random_i]}
 }
-
-readarray -t choices <<< "$ret"
 
 countdown 5 &
 
-min=0
-max=$((${#choices[@]} - 1)) # arr size -1
-
-random_i=$(rand $min $max)
-
-winner=${choices[$random_i]}
+INPUT_FILES=${*:-*.in}
+for file in $INPUT_FILES; do
+    pick_a_winner "$file"
+done
 
 wait
-print $winner LF; 
+
+for key in "${!winner[@]}"; do
+    print "${key%.*}:${winner[$key]}" LF
+done
