@@ -64,5 +64,5 @@ done
 wait
 
 for key in "${!winner[@]}"; do
-    print "${key%.*}:${winner[$key]}" LF
+    print "${key%.*}: ${winner[$key]}" LF
 done

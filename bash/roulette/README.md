@@ -9,15 +9,9 @@ whitesmiths
 gnu
 horstmann
 user@host:~/roulette$ ./s.sh
-minimalist_visuals:TRUE
-language:c#
-indentation_style:allman
-constraint:no ifs
-paradigm:procedural
-user@host:~/roulette$ ./s.sh | column -t -s':'
-minimalist_visuals  TRUE
-language            kotlin
-indentation_style   gnu
-constraint          no loops
-paradigm            oop
+minimalist_visuals: TRUE
+language: c++
+indentation_style: allman
+constraint: no ifs
+paradigm: procedural
 ```
