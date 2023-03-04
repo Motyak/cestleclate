@@ -2,3 +2,5 @@ imperative
 procedural
 functional
 oop
+event-driven
+any (hybrid procedural/functional/oop)
