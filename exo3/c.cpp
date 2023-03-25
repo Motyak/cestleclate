@@ -17,6 +17,8 @@
         commander(Repas{Menu::LE_GOURMAND});
 
         commander(Repas{HAMBURGER | FRITES | COCA});
+
+        commander(Repas{});
     }
 #endif
 
@@ -71,6 +73,9 @@
 
     int main()
     {
+        prendreConnaissance(repas);
+        presenter(repas);
+
         prendreConnaissance(repas);
         presenter(repas);
 
