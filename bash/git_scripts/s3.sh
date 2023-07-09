@@ -44,12 +44,13 @@ function uri_to_filename {
 
 function get_cur_repo_id {
 	local remote_origin_url; remote_origin_url="$(git config --get remote.origin.url)"
-	local repository_name; repository_name="$(uri_to_filename ${remote_origin_url##*//})"
+	local repository_name; repository_name="${remote_origin_url##*//}"
+						   repository_name="$(uri_to_filename ${repository_name%.git})"
 	
 	local git_dir_abs_path; git_dir_abs_path="$(git rev-parse --show-toplevel)"
 	local hashed_git_dir_abs_path; hashed_git_dir_abs_path="$(md5sum <<< $git_dir_abs_path)"
 
-	local repository_id="${repository_name%.git}-${hashed_git_dir_abs_path::4}"
+	local repository_id="$repository_name--${hashed_git_dir_abs_path::4}"
 	echo -n "$repository_id"
 }
 
