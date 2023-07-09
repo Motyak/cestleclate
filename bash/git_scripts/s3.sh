@@ -15,6 +15,7 @@ function clean_and_exit {
     exit $exit_code
 }
 
+# global variables, available from anywhere in script #
 g_git_locking=false
 g_gitscripts_locking=""
 
@@ -33,25 +34,6 @@ function git::unlock {
     g_git_locking=false
 }
 
-function gitscripts::lock {
-	local repository_id=$1
-
-	$g_gitscripts_locking && return 0 # gitscripts is already being locked => early return
-	# try and acquire the lock
-	until (set -o noclobber; echo $$ > "/tmp/git-scripts/lock/$repository_id") &>/dev/null; do
-		sleep 1 # retry in a second
-	done
-    g_gitscripts_locking=true
-}
-
-function gitscripts::unlock {
-	local repository_id=$1
-
-	$g_gitscripts_locking || return 0 # gitscripts isnt being locked => early return
-    rm -f "/tmp/git-scripts/lock/$repository_id"
-    g_gitscripts_locking=false
-}
-
 function uri_to_filename {
 	sed -e 's/%/%25/g' \
 		-e 's/\//%2f/g' \
@@ -60,7 +42,7 @@ function uri_to_filename {
 		-e 's/\*/%2a/g' <<< "$@"
 }
 
-function begin_git_transaction {
+function get_cur_repo_id {
 	local remote_origin_url; remote_origin_url="$(git config --get remote.origin.url)"
 	local repository_name; repository_name="$(uri_to_filename ${remote_origin_url##*//})"
 	
@@ -68,23 +50,47 @@ function begin_git_transaction {
 	local hashed_git_dir_abs_path; hashed_git_dir_abs_path="$(md5sum <<< $git_dir_abs_path)"
 
 	local repository_id="${repository_name%.git}-${hashed_git_dir_abs_path::4}"
+	echo -n "$repository_id"
+}
 
-	gitscripts::lock "$repository_id"
+function gitscripts::lock {
+	[ "$g_gitscripts_locking" -ne "" ] && return 0 # gitscripts is already being locked => early return
+	local repository_id; repository_id="$(get_cur_repo_id)"
+	# try and acquire the lock
+	until (set -o noclobber; echo $$ > "/tmp/git-scripts/lock/$repository_id") &>/dev/null; do
+		sleep 1 # retry in a second
+	done
+    g_gitscripts_locking="$repository_id"
+}
+
+function gitscripts::unlock {
+	[ "$g_gitscripts_locking" -eq "" ] && return 0 # gitscripts isnt being locked => early return
+    rm -f "/tmp/git-scripts/lock/$g_gitscripts_locking"
+    g_gitscripts_locking=""
+}
+
+function begin_git_transaction {
+	gitscripts::lock
 	git::lock
-	
-	# rsync current git repository in git-scripts/
+
+	local git_dir_abs_path; git_dir_abs_path="$(git rev-parse --show-toplevel)"
+	mkdir -p "/tmp/git-scripts/cache/$g_gitscripts_locking"; cd $_
+	rsync -a --delete "$git_dir_abs_path/" .
 }
 
 function end_git_transaction {
-	# ...
+	cd -
+	rsync -a --delete "$OLDPWD/" .
+
 	git::unlock
+	gitscripts::unlock
 }
 
 # make sure these directories exist
 mkdir -p /tmp/git-scripts/lock \
 		 /tmp/git-scripts/cache
 
-git::lock # BEGIN TRANSACTION BLOCK
+begin_git_transaction
 	current_branch_name=$(git branch --show-current)
 	git fetch origin "$current_branch_name"
 	git merge --ff-only "origin/$current_branch_name" || {
@@ -95,4 +101,4 @@ git::lock # BEGIN TRANSACTION BLOCK
 		# overwrite local branch with remote state
 		git reset --hard "origin/$current_branch_name"
 	}
-git::unlock # END TRANSACTION BLOCK
+end_git_transaction
