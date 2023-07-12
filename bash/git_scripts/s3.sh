@@ -55,7 +55,7 @@ function get_cur_repo_id {
 }
 
 function gitscripts::lock {
-	[ "$g_gitscripts_locking" -ne "" ] && return 0 # gitscripts is already being locked => early return
+	[ "$g_gitscripts_locking" == "" ] && return 0 # gitscripts is already being locked => early return
 	local repository_id; repository_id="$(get_cur_repo_id)"
 	# try and acquire the lock
 	until (set -o noclobber; echo $$ > "/tmp/git-scripts/lock/$repository_id") &>/dev/null; do
@@ -65,7 +65,7 @@ function gitscripts::lock {
 }
 
 function gitscripts::unlock {
-	[ "$g_gitscripts_locking" -eq "" ] && return 0 # gitscripts isnt being locked => early return
+	[ "$g_gitscripts_locking" == "" ] && return 0 # gitscripts isnt being locked => early return
     rm -f "/tmp/git-scripts/lock/$g_gitscripts_locking"
     g_gitscripts_locking=""
 }
@@ -87,21 +87,29 @@ function end_git_transaction {
 	gitscripts::unlock
 }
 
-# make sure these directories exist
-mkdir -p /tmp/git-scripts/lock \
-		 /tmp/git-scripts/cache
+function git_transaction {
+	local block; block="$(< /dev/stdin)"
+	begin_git_transaction
+	(eval "$block")
+	end_git_transaction
+}
 
-begin_git_transaction
-(
-	current_branch_name=$(git branch --show-current)
-	git fetch origin "$current_branch_name"
-	git merge --ff-only "origin/$current_branch_name" || {
-		# make a local backup of current branch #
-		backup_branch_name="backupp/$current_branch_name/$(date +%Y-%m-%d_%H-%M-%S)"
-		git branch "$backup_branch_name"
-	
-		# overwrite local branch with remote state
-		git reset --hard "origin/$current_branch_name"
-	}
-)
-end_git_transaction
+# timeout 5s bash s3.sh
+if [ "${BASH_SOURCE[0]}" == "$0" ]; then
+    # make sure these directories exist
+	mkdir -p /tmp/git-scripts/lock \
+			/tmp/git-scripts/cache
+
+	git_transaction <<-EOF
+		current_branch_name=$(git branch --show-current)
+		git fetch origin "$current_branch_name"
+		git merge --ff-only "origin/$current_branch_name" || {
+			# make a local backup of current branch #
+			backup_branch_name="backupp/$current_branch_name/$(date +%Y-%m-%d_%H-%M-%S)"
+			git branch "$backup_branch_name"
+
+			# overwrite local branch with remote state
+			git reset --hard "origin/$current_branch_name"
+		}
+	EOF
+fi
