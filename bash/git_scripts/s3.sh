@@ -92,6 +92,7 @@ mkdir -p /tmp/git-scripts/lock \
 		 /tmp/git-scripts/cache
 
 begin_git_transaction
+(
 	current_branch_name=$(git branch --show-current)
 	git fetch origin "$current_branch_name"
 	git merge --ff-only "origin/$current_branch_name" || {
@@ -102,4 +103,5 @@ begin_git_transaction
 		# overwrite local branch with remote state
 		git reset --hard "origin/$current_branch_name"
 	}
+)
 end_git_transaction
