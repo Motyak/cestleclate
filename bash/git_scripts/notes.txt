@@ -1,0 +1,9 @@
+
+From a subshell, you can't write in outer scope exported variables
+
+so at the moment, if we lock and the blocks fails, when running unlock it will think the resource isn't locked, while it is (because we arent able to inform parent that we locked the resource)
+
+========================================================
+
+
+Le script devrait, dans son main, prendre un fichier bash en argument et executer le fichier bash dans un bloc git transaction.

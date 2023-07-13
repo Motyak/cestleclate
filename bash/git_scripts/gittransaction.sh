@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash -i
 
 # script should not be sourced
 [ "${BASH_SOURCE[0]}" != "$0" ] && return 1
@@ -79,6 +79,8 @@ function begin_git_transaction {
     local git_dir_abs_path; git_dir_abs_path="$(git rev-parse --show-toplevel)"
     mkdir -p "/tmp/git-scripts/cache/$g_gitscripts_locking"; cd "$_"
     rsync -a --delete "$git_dir_abs_path/" .
+
+    >&2 echo "BEGIN TRANSACTION"
 }
 
 function end_git_transaction {
@@ -87,30 +89,16 @@ function end_git_transaction {
 
     git::unlock
     gitscripts::unlock
-}
 
-function git_transaction {
-    local block; block="$(< /dev/stdin)"
-    begin_git_transaction
-    (eval "$block")
-    end_git_transaction
+    >&2 echo "END TRANSACTION"
 }
-
-## timeout 5s bash s3.sh
 
 # make sure these directories exist
 mkdir -p /tmp/git-scripts/lock \
         /tmp/git-scripts/cache
 
-git_transaction <<'EOF'
-    current_branch_name=$(git branch --show-current)
-    git fetch origin "$current_branch_name"
-    git merge --ff-only "origin/$current_branch_name" || {
-        # make a local backup of current branch #
-        backup_branch_name="backupp/$current_branch_name/$(date +%Y-%m-%d_%H-%M-%S)"
-        git branch "$backup_branch_name"
-
-        # overwrite local branch with remote state
-        git reset --hard "origin/$current_branch_name"
-    }
-EOF
+begin_git_transaction
+(
+    bash --rcfile <(echo 'PS1="transaction...> "')
+)
+end_git_transaction
