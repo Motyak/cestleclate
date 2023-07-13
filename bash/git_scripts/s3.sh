@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# script should not be sourced
+[ "${BASH_SOURCE[0]}" != "$0" ] && return 1
+
 set -o errexit
 
 trap clean_and_exit EXIT
@@ -93,22 +96,21 @@ function git_transaction {
     end_git_transaction
 }
 
-# timeout 5s bash s3.sh
-if [ "${BASH_SOURCE[0]}" == "$0" ]; then
-    # make sure these directories exist
-    mkdir -p /tmp/git-scripts/lock \
-            /tmp/git-scripts/cache
+## timeout 5s bash s3.sh
 
-    git_transaction <<'EOF'
-        current_branch_name=$(git branch --show-current)
-        git fetch origin "$current_branch_name"
-        git merge --ff-only "origin/$current_branch_name" || {
-            # make a local backup of current branch #
-            backup_branch_name="backupp/$current_branch_name/$(date +%Y-%m-%d_%H-%M-%S)"
-            git branch "$backup_branch_name"
+# make sure these directories exist
+mkdir -p /tmp/git-scripts/lock \
+        /tmp/git-scripts/cache
 
-            # overwrite local branch with remote state
-            git reset --hard "origin/$current_branch_name"
-        }
+git_transaction <<'EOF'
+    current_branch_name=$(git branch --show-current)
+    git fetch origin "$current_branch_name"
+    git merge --ff-only "origin/$current_branch_name" || {
+        # make a local backup of current branch #
+        backup_branch_name="backupp/$current_branch_name/$(date +%Y-%m-%d_%H-%M-%S)"
+        git branch "$backup_branch_name"
+
+        # overwrite local branch with remote state
+        git reset --hard "origin/$current_branch_name"
+    }
 EOF
-fi
