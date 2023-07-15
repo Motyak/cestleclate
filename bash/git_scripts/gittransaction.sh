@@ -5,6 +5,10 @@
 
 set -o errexit
 
+# script should not be executed outside of a git repository
+g_git_dir_abs_path="$(git rev-parse --show-toplevel)"
+g_gitscripts_repo=""
+
 trap clean_and_exit EXIT
 function clean_and_exit {
     local exit_code=$?
@@ -13,14 +17,9 @@ function clean_and_exit {
     >&2 echo "Cleaning..."
     git::unlock
     gitscripts::unlock
-    unset GITTRANSACTION
 
     exit $exit_code
 }
-
-# global variables, available from anywhere in script #
-g_git_dir_abs_path=""
-g_gitscripts_repo=""
 
 function git::lock {
     # try and acquire the lock
@@ -45,8 +44,6 @@ function get_cur_repo_id {
     local remote_origin_url; remote_origin_url="$(git config --get remote.origin.url)"
     local repository_name; repository_name="${remote_origin_url##*//}"
                            repository_name="$(uri_to_filename "${repository_name%.git}")"
-    
-    g_git_dir_abs_path="$(git rev-parse --show-toplevel)"
     local hashed_git_dir_abs_path; hashed_git_dir_abs_path="$(md5sum <<< "$g_git_dir_abs_path")"
 
     local repository_id="$repository_name--${hashed_git_dir_abs_path::4}"
@@ -84,16 +81,13 @@ function end_git_transaction {
     git::unlock
     gitscripts::unlock
 
-    unset GITTRANSACTION
     >&2 echo "END TRANSACTION"
 }
 
 # make sure these directories exist
 mkdir -p /tmp/git-scripts/lock \
-        /tmp/git-scripts/cache
+         /tmp/git-scripts/cache
 
 begin_git_transaction
-(
     bash --rcfile <(echo 'PS1="transaction...> "')
-)
 end_git_transaction
