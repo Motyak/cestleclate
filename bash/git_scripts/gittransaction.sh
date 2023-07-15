@@ -1,4 +1,4 @@
-#!/bin/bash -i
+#!/usr/bin/env -S bash -i
 
 # script should not be sourced
 [ "${BASH_SOURCE[0]}" != "$0" ] && return 1
