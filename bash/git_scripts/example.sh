@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+# make sure we only execute this using gittransaction
+[ -v GITTRANSACTION ] || exit 1
 
 current_branch_name=$(git branch --show-current)
 git fetch origin "$current_branch_name"

@@ -13,6 +13,7 @@ function clean_and_exit {
     >&2 echo "Cleaning..."
     git::unlock
     gitscripts::unlock
+    unset GITTRANSACTION
 
     exit $exit_code
 }
@@ -80,6 +81,7 @@ function begin_git_transaction {
     mkdir -p "/tmp/git-scripts/cache/$g_gitscripts_locking"; cd "$_"
     rsync -a --delete "$git_dir_abs_path/" .
 
+    export GITTRANSACTION="occuring"
     >&2 echo "BEGIN TRANSACTION"
 }
 
@@ -90,6 +92,7 @@ function end_git_transaction {
     git::unlock
     gitscripts::unlock
 
+    unset GITTRANSACTION
     >&2 echo "END TRANSACTION"
 }
 
