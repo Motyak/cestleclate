@@ -1,3 +1,9 @@
+# NEVER CALL `exec` IN A TRANSACTION SCRIPT..
+# ..AS IT WILL NEVER RESUME TO PARENT SHELL EXECUTION FLOW !
+
+# script should not be sourced
+[ "${BASH_SOURCE[0]}" != "$0" ] && return 1
+
 # make sure we only execute this using gittransaction
 [ -v GITTRANSACTION ] || exit 1
 
