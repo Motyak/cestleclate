@@ -79,7 +79,7 @@ function begin_git_transaction {
 
 function end_git_transaction {
     cd -
-    rsync -a --delete "$OLDPWD/" .
+    rsync -a --delete "$OLDPWD/" "$g_git_dir_abs_path"
 
     git::unlock
     gitscripts::unlock
