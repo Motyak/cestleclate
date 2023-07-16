@@ -13,6 +13,9 @@ trap clean_and_exit EXIT
 function clean_and_exit {
     local exit_code=$?
 
+    # allow to locate at which step the failure took place (preparation, transaction itself or commit)
+    [ $exit_code -ne 0 ] && >&2 echo "ABORT TRANSACTION"
+
     set +o errexit; trap - ERR # cleaning shall not fail
     >&2 echo "Cleaning..."
     git::unlock
@@ -64,6 +67,7 @@ function gitscripts::unlock {
 }
 
 function begin_git_transaction {
+    >&2 echo "PREPARE TRANSACTION"
     gitscripts::lock
     git::lock
 
@@ -75,11 +79,9 @@ function begin_git_transaction {
 }
 
 function end_git_transaction {
+    >&2 echo "COMMIT TRANSACTION"
     cd -
     rsync -a --delete "$OLDPWD/" "$g_git_dir_abs_path"
-
-    git::unlock
-    gitscripts::unlock
 
     >&2 echo "END TRANSACTION"
 }
