@@ -16,13 +16,36 @@ wget -O "$prog_path" -q --show-progress \
     https://github.com/Motyak/cestleclate/raw/master/bash/git_scripts/gittransaction.sh
 chmod u+x "$prog_path"
 
->&2 echo "Adding gittransaction to user \`$(whoami)\`'s .bashrc ..."
-echo $'\n'"alias gittransaction='$prog_path'" >> "$home_dir/.bashrc"
+# escape PCRE metacharacters \/^$.[]|()?*+{}
+function pcre::literal_str {
+    sed -e 's/\\/\\\\/g' \
+        -e 's/\//\\\//g' \
+        -e 's/\^/\\\^/g' \
+        -e 's/\$/\\\$/g' \
+        -e 's/\./\\\./g' \
+        -e 's/\[/\\\[/g' \
+        -e 's/\]/\\\]/g' \
+        -e 's/|/\\|/g' \
+        -e 's/(/\\(/g' \
+        -e 's/)/\\)/g' \
+        -e 's/?/\\?/g' \
+        -e 's/*/\\*/g' \
+        -e 's/+/\\+/g' \
+        -e 's/{/\\{/g' \
+        -e 's/}/\\}/g' <<< "$@"
+}
+
+# if PATH doesn't contain install_dir..
+grep -P '(^|:)'"$(pcre::literal_str "$install_dir")"'(:|$)' <<< "$PATH" || {
+    >&2 echo "Adding \`$install_dir\` to user $(whoami)'s .bashrc ..."
+    echo $'\n'"export PATH=\"$install_dir:\$PATH\"" >> "$home_dir/.bashrc"
+
+    >&2 cat <<EOF
+
+gittransaction will automatically be added whenever you open a new shell.
+Type this command to add gittransaction to your current shell session:"
+export PATH="$install_dir:\$PATH"
+EOF
+}
 
 >&2 echo "DONE !"
->&2 cat <<EOF
-gittransaction will be automatically added whenever you open a new shell.
-Type this command to add gittransaction to your current shell session:"
-alias gittransaction="\'$prog_path\'"
-
-EOF
