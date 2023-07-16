@@ -15,7 +15,7 @@ Cleaning...
 ## passing a script file (bash or sh)
 
 ```terminal
-gittransaction < example.sh
+$ gittransaction < example.sh
 BEGIN TRANSACTION
 # <script output if any>
 END TRANSACTION
@@ -25,7 +25,7 @@ Cleaning...
 ## passing a script file (bash or sh) with a timeout
 
 ```terminal
-timeout 10s gittransaction < example.sh
+$ timeout 10s gittransaction < example.sh
 # suppose getting the lock takes too much time...
 Cleaning...
 ```
