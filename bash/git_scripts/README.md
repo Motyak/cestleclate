@@ -38,3 +38,9 @@ gittransaction <<EOF
     # ...
 EOF
 ```
+
+# HOW TO INSTALL
+
+```terminal
+$ wget -nv -O >(bash) https://raw.githubusercontent.com/Motyak/cestleclate/master/bash/git_scripts/install.sh
+```
