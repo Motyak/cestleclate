@@ -2,7 +2,7 @@
 
 set -o errexit
 
-trap '>&2 echo "ABORTED !"' ERR
+trap '>&2 echo "ABORTED"' ERR
 
 home_dir="$HOME"
 install_dir="$home_dir/.local/bin"
@@ -39,13 +39,12 @@ function pcre::literal_str {
 grep -P '(^|:)'"$(pcre::literal_str "$install_dir")"'(:|$)' <<< "$PATH" || {
     >&2 echo "Adding \`$install_dir\` to user $(whoami)'s .bashrc ..."
     echo $'\n'"export PATH=\"$install_dir:\$PATH\"" >> "$home_dir/.bashrc"
-
-    >&2 cat <<EOF
-
-gittransaction will automatically be added whenever you open a new shell.
-Type this command to add gittransaction to your current shell session:"
-export PATH="$install_dir:\$PATH"
-EOF
 }
 
->&2 echo "DONE !"
+>&2 cat <<EOF
+DONE !
+
+gittransaction will automatically be added whenever you open a new shell.
+Type this command to add gittransaction to your current shell session:
+export PATH="$install_dir:\$PATH"
+EOF

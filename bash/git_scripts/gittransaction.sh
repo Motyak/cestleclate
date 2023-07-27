@@ -1,13 +1,12 @@
 #!/usr/bin/env -S bash -i
 
-# script should not be sourced
-[ "${BASH_SOURCE[0]}" != "$0" ] && return 1
+[ "${BASH_SOURCE[0]}" != "$0" ] && >&2 echo "script should not be sourced" && return 1
+
+g_git_dir_abs_path="$(git rev-parse --show-toplevel)"
+[ $? -ne 0 ] && >&2 echo "script should not be executed outside of a git repository"
+g_gitscripts_repo=""
 
 set -o errexit
-
-# script should not be executed outside of a git repository
-g_git_dir_abs_path="$(git rev-parse --show-toplevel)"
-g_gitscripts_repo=""
 
 trap clean_and_exit EXIT
 function clean_and_exit {
@@ -91,5 +90,5 @@ mkdir -p /tmp/git-scripts/lock \
          /tmp/git-scripts/cache
 
 begin_git_transaction
-    bash --rcfile <(echo 'PS1="transaction...> "')
+    bash -o errexit --rcfile <(echo 'PS1="transaction...> "')
 end_git_transaction
