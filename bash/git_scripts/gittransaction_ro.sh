@@ -5,14 +5,10 @@
     return 1
 }
 
-g_git_dir_abs_path="$(git rev-parse --show-toplevel)"
-[ $? -ne 0 ] && {
+git rev-parse || {
     >&2 echo "script should not be executed outside of a git repository"
     exit 1
 }
-g_gitscripts_repo=""
-
-source gitscripts.sh
 
 set -o errexit
 
@@ -26,7 +22,6 @@ function clean_and_exit {
     set +o errexit; trap - ERR # cleaning shall not fail
     >&2 echo "Cleaning..."
     git::unlock
-    gitscripts::unlock
 
     exit $exit_code
 }
@@ -44,27 +39,15 @@ function git::unlock {
 
 function begin_git_transaction {
     >&2 echo "PREPARE TRANSACTION"
-    gitscripts::lock
     git::lock
-
-    mkdir -p "/tmp/git-scripts/cache/$g_gitscripts_repo"; cd "$_"
-    rsync -a --delete "$g_git_dir_abs_path/" .
 
     export GITTRANSACTION="occuring"
     >&2 echo "BEGIN TRANSACTION"
 }
 
 function end_git_transaction {
-    >&2 echo "COMMIT TRANSACTION"
-    cd -
-    rsync -a --delete "$OLDPWD/" "$g_git_dir_abs_path"
-
     >&2 echo "END TRANSACTION"
 }
-
-# make sure these directories exist
-mkdir -p /tmp/git-scripts/lock \
-         /tmp/git-scripts/cache
 
 begin_git_transaction
     bash -o errexit --rcfile <(echo 'PS1="transaction...> "')
