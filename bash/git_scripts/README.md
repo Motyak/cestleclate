@@ -4,6 +4,7 @@
 
 ```terminal
 $ gittransaction
+PREPARE TRANSACTION
 BEGIN TRANSACTION
 # type in git commands
 # ...
@@ -16,6 +17,7 @@ Cleaning...
 
 ```terminal
 $ gittransaction < example.sh
+PREPARE TRANSACTION
 BEGIN TRANSACTION
 # <script output if any>
 END TRANSACTION
@@ -26,6 +28,7 @@ Cleaning...
 
 ```terminal
 $ timeout 10s gittransaction < example.sh
+PREPARE TRANSACTION
 # suppose getting the lock takes too much time...
 Cleaning...
 ```
